@@ -96,6 +96,9 @@ def get_values(globbox_block):
         # Get the text inside the <ml> element (for example, "val n = 5;")
         ml_text = ml.text.strip() if ml.text else None
 
+        # Retrieve the 'id' attribute from the <ml> element
+        ml_id = ml.attrib.get('id')
+
         # Extract only those lines that match the pattern “val variable_name = value;”
         if ml_text and ml_text.startswith('val') and '=' in ml_text:
             try:
@@ -110,6 +113,7 @@ def get_values(globbox_block):
 
                 # Append the result to the list
                 values.append({
+                    'id': ml_id,
                     'name': var_name,
                     'value': var_value,
                     'layout': layout_text,
@@ -149,6 +153,46 @@ def get_vars(globbox_block):
         })
 
     return vars  # Return list of variables
+
+
+def get_functions(globbox_block):
+    """
+    Extracts function definitions from <ml> tags in the <globbox> block.
+    """
+    functions = []  # List to store the extracted function definitions
+
+    for ml in globbox_block.findall('.//ml'):  # Find all <ml> elements in the <globbox> block
+        # Retrieve the text content of the <ml> element (e.g., "fun Chopstick(ph(i)) = ...")
+        ml_text = ml.text.strip() if ml.text else None
+
+        # Retrieve the 'id' attribute from the <ml> element
+        ml_id = ml.attrib.get('id')
+
+        # Check if the line starts with "fun", indicating a function definition
+        if ml_text and ml_text.startswith('fun'):
+            try:
+                # Split the text into the function name and function value
+                # Example: "fun Chopstick(ph(i)) = 1`cs(i) ++ 1`cs(if i = n then 1 else i+1);"
+                function_name = ml_text.split('=')[0].replace('fun', '').strip()  # Extract the function name
+                function_value = ml_text.split('=', 1)[1].strip().rstrip(';')      # Extract the function value and remove the semicolon
+
+                # Retrieve the <layout> element if it exists
+                layout_element = ml.find('layout')
+                layout_text = layout_element.text.strip().replace('\n', ' ') if layout_element is not None and layout_element.text else None
+
+                # Append the function information to the list as a dictionary
+                functions.append({
+                    'id': ml_id,
+                    'name': function_name,  # The name of the function
+                    'value': function_value,  # The body of the function
+                    'layout': layout_text,           # Layout text if available
+                })
+            except IndexError:
+                # Skip any invalid <ml> entries that do not match the expected format
+                continue
+
+    return functions  
+
 
 
 
@@ -268,7 +312,8 @@ def collect_all_data(page_block, globbox_block):
         "arcs": get_arcs(page_block),
         "colsets": get_colsets(globbox_block),
         "values": get_values(globbox_block),
-        "variables": get_vars(globbox_block)
+        "variables": get_vars(globbox_block),
+        "functions": get_functions(globbox_block)
     }
 
     return parsed_data

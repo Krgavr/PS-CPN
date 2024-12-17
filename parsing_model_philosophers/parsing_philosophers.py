@@ -27,9 +27,11 @@ if __name__ == "__main__":
     colsets_df = pd.DataFrame(all_data["colsets"])
     values_df = pd.DataFrame(all_data["values"])
     variables_df = pd.DataFrame(all_data["variables"])
-
+    functions_df = pd.DataFrame(all_data["functions"])
 
     # Loading a DataFrame into the console
+    pd.set_option('display.max_colwidth', None)
+
     print("Information about places:")
     print(places_df)
 
@@ -47,3 +49,6 @@ if __name__ == "__main__":
 
     print("\nInformation about variables:")
     print(variables_df)
+
+    print("\nInformation about functions:")
+    print(functions_df)
