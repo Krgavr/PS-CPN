@@ -3,143 +3,143 @@ from xml.etree import ElementTree as ET
 
 def load_cpn_file(file_path):
     """
-    Načte a vrátí kořenový prvek XML souboru.
+    Reads and returns the root element of the XML file.
     """
     try:
-        tree = ET.parse(file_path)  # Načtení XML souboru
-        root = tree.getroot()  # Získání kořenového elementu
+        tree = ET.parse(file_path)  # Reading XML file
+        root = tree.getroot()  # Getting the root element
         return root
     except ET.ParseError as e:
-        raise ValueError(f"Chyba při zpracování XML: {e}")  # Ošetření chyby při parsování
+        raise ValueError(f"Error during XML processing: {e}")  # Parsing error handling
     except FileNotFoundError:
-        raise ValueError("Soubor nebyl nalezen, zkontrolujte cestu.")  # Ošetření chyby, pokud soubor neexistuje
+        raise ValueError("File not found, check path.")  # Error handling if file does not exist
 
 
 def get_page_block(root):
     """
-    Najde blok <page> uvnitř <cpnet>.
+    Finds the <page> block inside <cpnet>.
     """
     cpnet_block = root.find('cpnet')
     if cpnet_block is None:
-        raise ValueError("Soubor neobsahuje blok <cpnet>.")
+        raise ValueError("The file does not contain the <cpnet> block.")
 
     page_block = cpnet_block.find('page')
     if page_block is None:
-        raise ValueError("Blok <cpnet> neobsahuje <page>.")
+        raise ValueError("The <cpnet> block does not contain <page>.")
 
     return page_block
 
 
 def get_globbox_block(root):
     """
-    Najde blok <globbox> uvnitř <cpnet>.
+    Finds the <globbox> block inside <cpnet>.
     """
     cpnet_block = root.find('cpnet')
     if cpnet_block is None:
-        raise ValueError("Soubor neobsahuje blok <cpnet>.")
+        raise ValueError("The file does not contain a <cpnet> block.")
     
     globbox_block = cpnet_block.find('globbox')
     if globbox_block is None:
-        # Pokud blok <globbox> neexistuje, vyvolat chybu
-        raise ValueError("Soubor neobsahuje blok <globbox>.")
+        # If the <globbox> block does not exist, raise an error
+        raise ValueError("The file does not contain a <globbox> block.")
 
-    return globbox_block  # Vrátit nalezený blok
+    return globbox_block  # Return found block
 
 
 def get_colsets(globbox_block):
     """
-    Získání informací o barevných množinách (colsets) z bloku <globbox>.
+    Get information about colsets from <globbox> block.
     """
-    colsets = []  # Inicializace seznamu pro barevné množiny
-    for color in globbox_block.findall('.//color'):  # Najít všechny elementy <color>
-        # Získání ID barevné množiny z atributu <color id="...">
+    colsets = []  # List initialization for colored sets
+    for color in globbox_block.findall('.//color'):  # Find all elements <color>
+        # Getting color set ID from <color id="..."> attribute
         colset_id = color.attrib.get('id')  
 
-        # Získání názvu barevné množiny z podřízeného <id>
+        # Getting the color set name from the child <id>
         colset_name = color.find('id').text if color.find('id') is not None else None
 
-        # Získání layoutu z podřízeného <layout>
+        # Getting layout from child <layout>
         layout_element = color.find('layout')
         layout_text = layout_element.text if layout_element is not None else None
 
-        # Určení typu (subtype) na základě prvního prvku mezi <id> a <layout>
-        subtype = None  # Inicializace proměnné subtype jako None
-        subtype_contents = None  # Inicializace seznamu pro obsah
-        for child in color:  # Iterace přes všechny podřízené elementy v rámci <color>
-            if child.tag not in ['id', 'layout']:  # Ignorujeme prvky <id> a <layout>, protože neurčují typ
-                subtype = child.tag  # Používáme název tagu aktuálního prvku jako typ (např. unit, bool, enum)
-                # Pokud existují prvky <id> uvnitř aktuálního podřízeného prvku, získáme jejich obsah
+        # Determine the type (subtype) based on the first element between <id> and <layout>
+        subtype = None  # Initialize the subtype variable as None
+        subtype_contents = None  # Initializing a list for content
+        for child in color:  # Iteration over all child elements within <color>
+            if child.tag not in ['id', 'layout']:  # Ignore <id> and <layout> elements because they do not specify the type
+                subtype = child.tag  # We use the tag name of the current item as a type (e.g. unit, bool, enum)
+                # If there are <id> elements inside the current child element, we get their content
                 subtype_contents= [elem.text for elem in child.findall('id') if elem.text]
-                subtype_contents = subtype_contents if subtype_contents else None  # Pokud seznam prázdný, nastavíme None
-                break  # Ukončíme smyčku, protože typ byl nalezen
+                subtype_contents = subtype_contents if subtype_contents else None  # If the list is empty, set None
+                break  # Break the loop because the type has been found
 
-        # Přidání dat barevné množiny do seznamu
+        # Adding color set data to the list
         colsets.append({
-            'id': colset_id,         # ID barevné množiny, jedinečný identifikátor pro konkrétní množinu
-            'název': colset_name,    # Název barevné množiny z elementu <id>
-            'layout': layout_text,   # Textová reprezentace množiny z elementu <layout>
-            'subtype': subtype,      # Typ barevné množiny, určený na základě podřízených prvků (např. unit, enum, product)
-            'subtype_contents': subtype_contents     # Obsah podřízených prvků, např. seznam hodnot (['A', 'B']) nebo None, pokud není obsah
+            'id': colset_id,         # Color set ID, unique identifier for a specific set
+            'name': colset_name,    # Color set name from <id> element
+            'layout': layout_text,   # Text representation of the set from the <layout> element
+            'subtype': subtype,      # Color set type, determined by child elements (e.g. unit, enum, product)
+            'subtype_contents': subtype_contents     # Content of child elements, e.g. list of values (['A', 'B']) or None if there is no content
         })
 
 
-    return colsets  # Vrátit seznam barevných množin
+    return colsets  # Return list of color sets
 
 
 def get_vars(globbox_block):
     """
-    Získání informací o proměnných (variables) z bloku <globbox>.
+    Getting information about variables from the <globbox> block.
     """
-    vars = []  # Inicializace seznamu pro proměnné
-    for var in globbox_block.findall('.//var'):  # Najít všechny elementy <var>
-        # Získání ID proměnné z atributu <var id="...">
+    vars = []  # List initialization for variables
+    for var in globbox_block.findall('.//var'):  # Find all <var> elements
+        # Getting variable ID from attribute <var id="...">
         var_id = var.attrib.get('id')
 
-        # Získání typu proměnné z elementu <type><id>...</id></type>
+        # Getting the variable type from the <type><id>...</id></type> element
         type_element = var.find('type')
         var_type = type_element.find('id').text if type_element is not None and type_element.find('id') is not None else None
 
-        # Získání názvů proměnných z elementů <id>
+        # Getting variable names from <id> elements
         var_names = [name.text for name in var.findall('id') if name.text]
 
-        # Získání layoutu z podřízeného <layout>
+        # Getting layout from child <layout>
         layout_element = var.find('layout')
         layout_text = layout_element.text if layout_element is not None else None
 
-        # Přidání dat proměnné do seznamu
+        # Adding variable data to the list
         vars.append({
-            'id': var_id,          # ID proměnné, jedinečný identifikátor
-            'type': var_type,      # Typ proměnné (např. IN)
-            'names': var_names,    # Seznam názvů proměnných
-            'layout': layout_text  # Textová reprezentace z elementu <layout>
+            'id': var_id,          # Variable ID, unique identifier
+            'type': var_type,      # Variable type (e.g. IN)
+            'names': var_names,    # List of variable names
+            'layout': layout_text  # Text representation from <layout> element
         })
 
-    return vars  # Vrátit seznam proměnných
+    return vars  # Return list of variables
 
 
 
 def get_places(page_block):
     """
-    Získání informací o místech (<place>).
+    Getting information about places (<place>).
     """
     places = []
     for place in page_block.findall('place'):
-        place_id = place.attrib.get('id')  # Získání ID místa
-        text = place.find('text').text if place.find('text') is not None else None  # Získání názvu místa
-        type_element = place.find('type')  # Získání typu místa
+        place_id = place.attrib.get('id')  # Getting a place ID
+        text = place.find('text').text if place.find('text') is not None else None # Getting a place name
+        type_element = place.find('type')  # Getting the place type
         place_type = (
             type_element.find('text').text
             if type_element is not None and type_element.find('text') is not None
             else None
         )
-        initmark_element = place.find('initmark')  # Získání počáteční značky
+        initmark_element = place.find('initmark')  # Getting the initial mark
         initmark = (
             initmark_element.find('text').text
             if initmark_element is not None and initmark_element.find('text') is not None
             else None
         )
 
-        # Přidání dat místa do seznamu
+        # Adding location data to the list
         places.append({
             'place_id': place_id,
             'text': text,
@@ -151,38 +151,38 @@ def get_places(page_block):
 
 def get_transitions(page_block):
     """
-    Získání informací o přechodech (<trans>).
+    Get information about transitions (<trans>).
     """
     transitions = []
     for transition in page_block.findall('trans'):
-        transition_id = transition.attrib.get('id')  # Získání ID přechodu
-        text = transition.find('text').text if transition.find('text') is not None else None  # Získání názvu přechodu
+        transition_id = transition.attrib.get('id')  # Getting the transition ID
+        text = transition.find('text').text if transition.find('text') is not None else None  # Getting the name of the transition
 
-        # Nalezení podmínky (cond)
+        # Finding conditions (cond)
         cond_element = transition.find('cond')
         condition = (
             cond_element.find('text').text if cond_element is not None and cond_element.find('text') is not None else None
-        )  # Získání podmínky, např. [in1<>in2]
+        )  # Getting a condition, e.g. [in1<>in2]
 
-        # Nalezení časового omezení (time) a jeho extrakce
+        # Finding the time constraint (time) and its extraction
         time_element = transition.find('time')
         time_text = (
             time_element.find('text').text if time_element is not None and time_element.find('text') is not None else None
         )
 
-        # Nalezení kódu (code) a jeho extrakce
+        # Finding the code and extracting it
         code_element = transition.find('code')
         code_text = (
             code_element.find('text').text if code_element is not None and code_element.find('text') is not None else None
         )
 
-        # Nalezení priority (priority) a její extrakce
+        # Finding priority and extracting it
         priority_element = transition.find('priority')
         priority_text = (
             priority_element.find('text').text if priority_element is not None and priority_element.find('text') is not None else None
         )
 
-        # Přidání dat přechodu do seznamu
+        # Adding transition dates to the list
         transitions.append({
             'transition_id': transition_id,
             'text': text,
@@ -196,37 +196,37 @@ def get_transitions(page_block):
 
 def get_arcs(page_block):
     """
-    Získání informací o hranách (<arc>).
+    Getting edge information (<arc>).
     """
     arcs = []
     for arc in page_block.findall('arc'):
-        arc_id = arc.attrib.get('id')  # Získání ID hrany
-        orientation = arc.attrib.get('orientation')  # Získání směru hrany (např. "PtoT")
-        order = arc.attrib.get('order')  # Získání pořadí hrany (např. "1")
+        arc_id = arc.attrib.get('id')  # Getting arcs ID
+        orientation = arc.attrib.get('orientation')  # Getting arc direction (e.g. "PtoT")
+        order = arc.attrib.get('order')  # Getting the arc order (e.g. "1")
 
-        # Získání ID přechodu a místa, které hrana spojuje
+        # Getting the ID of the transition and the place that the edge connects
         transend = arc.find('transend').attrib.get('idref') if arc.find('transend') is not None else None
         placeend = arc.find('placeend').attrib.get('idref') if arc.find('placeend') is not None else None
 
-        # Získání výrazu hrany
-        expression_element = arc.find('annot/text')  # Hledání anotace výrazu
+        # Getting the edge expression
+        expression_element = arc.find('annot/text')  # Search for expression annotation
         expression = expression_element.text if expression_element is not None else None
 
-        # Přidání dat hrany do seznamu
+        # Adding arc data to the list
         arcs.append({
-            'arc_id': arc_id,          # ID hrany
-            'orientation': orientation,  # Směr (např. "PtoT" nebo "TtoP")
-            'order': order,            # Pořadí hrany
-            'transend': transend,      # ID přechodu
-            'placeend': placeend,      # ID místa
-            'expression': expression   # Výraz (např. "1`in2")
+            'arc_id': arc_id,          # Arcs ID
+            'orientation': orientation,  # Direction (e.g. "PtoT" or "TtoP")
+            'order': order,            # Arcs order
+            'transend': transend,      # Transition ID
+            'placeend': placeend,      # Place ID
+            'expression': expression   # Expression (e.g. "1`in2")
         })
     return arcs
 
 
 def collect_all_data(page_block, globbox_block):
     """
-    Sbírá všechna data (místa, přechody, oblouky) a spojuje je do jednoho slovníku.
+    It collects all data (places, transitions, arcs) and combines them into one dictionary.
     """
     parsed_data = {
         "places": get_places(page_block),
