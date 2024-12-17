@@ -86,6 +86,40 @@ def get_colsets(globbox_block):
     return colsets  # Return list of color sets
 
 
+def get_values(globbox_block):
+    """
+    Extracts values defined inside <ml> tags in the <globbox> block.
+    """
+    values = []  # List to store variable values
+
+    for ml in globbox_block.findall('.//ml'):  # Find all <ml> elements
+        # Get the text inside the <ml> element (for example, "val n = 5;")
+        ml_text = ml.text.strip() if ml.text else None
+
+        # Extract only those lines that match the pattern “val variable_name = value;”
+        if ml_text and ml_text.startswith('val') and '=' in ml_text:
+            try:
+                # Parse the string "val n = 5;" -> variable and value
+                parts = ml_text.split('=')
+                var_name = parts[0].replace('val', '').strip()  # Variable name
+                var_value = parts[1].replace(';', '').strip()   # Variable value
+
+                # Extract <layout> (if it is inside <ml>)
+                layout_element = ml.find('layout')
+                layout_text = layout_element.text.strip() if layout_element is not None and layout_element.text else None
+
+                # Append the result to the list
+                values.append({
+                    'name': var_name,
+                    'value': var_value,
+                    'layout': layout_text,
+                })
+            except IndexError:
+                continue  # Skip invalid lines
+
+    return values
+
+
 def get_vars(globbox_block):
     """
     Getting information about variables from the <globbox> block.
@@ -233,6 +267,7 @@ def collect_all_data(page_block, globbox_block):
         "transitions": get_transitions(page_block),
         "arcs": get_arcs(page_block),
         "colsets": get_colsets(globbox_block),
+        "values": get_values(globbox_block),
         "variables": get_vars(globbox_block)
     }
 
