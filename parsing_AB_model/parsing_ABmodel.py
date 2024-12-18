@@ -76,7 +76,7 @@ def get_colsets(globbox_block):
         # Přidání dat barevné množiny do seznamu
         colsets.append({
             'id': colset_id,         # ID barevné množiny, jedinečný identifikátor pro konkrétní množinu
-            'název': colset_name,    # Název barevné množiny z elementu <id>
+            'name': colset_name,    # Název barevné množiny z elementu <id>
             'layout': layout_text,   # Textová reprezentace množiny z elementu <layout>
             'subtype': subtype,      # Typ barevné množiny, určený na základě podřízených prvků (např. unit, enum, product)
             'subtype_contents': subtype_contents     # Obsah podřízených prvků, např. seznam hodnot (['A', 'B']) nebo None, pokud není obsah
