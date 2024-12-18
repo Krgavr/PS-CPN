@@ -15,7 +15,7 @@ def create_colset_functions(colsets):
     colset_functions = {}
 
     for colset in colsets:
-        colset_name = colset["název"]
+        colset_name = colset["name"]
         colset_type = colset["subtype"]
         subtype_contents = colset["subtype_contents"]
 
