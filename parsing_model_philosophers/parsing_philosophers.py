@@ -5,7 +5,7 @@ from functions_for_parsing import *
 
 if __name__ == "__main__":
     
-    file_path = 'parsing_model_philosophers/model_Philosophers.txt'
+    file_path = 'PS-CPN/parsing_model_philosophers/model_Philosophers.txt'
 
     # Loading file
     root = load_cpn_file(file_path)
