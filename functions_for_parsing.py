@@ -65,12 +65,23 @@ def get_colsets(globbox_block):
         # Determine the type (subtype) based on the first element between <id> and <layout>
         subtype = None  # Initialize the subtype variable as None
         subtype_contents = None  # Initializing a list for content
+        index_values = None  # Initialize index_values as None
+
         for child in color:  # Iteration over all child elements within <color>
             if child.tag not in ['id', 'layout']:  # Ignore <id> and <layout> elements because they do not specify the type
                 subtype = child.tag  # We use the tag name of the current item as a type (e.g. unit, bool, enum)
-                # If there are <id> elements inside the current child element, we get their content
-                subtype_contents= [elem.text for elem in child.findall('id') if elem.text]
-                subtype_contents = subtype_contents if subtype_contents else None  # If the list is empty, set None
+
+                # Special handling for 'index' subtype
+                if subtype == "index":
+                    # Extract <ml> and <id> values
+                    ml_values = [int(ml.text) for ml in child.findall('ml') if ml.text.isdigit()]
+                    id_value = child.find('id').text if child.find('id') is not None else None
+                    index_values = {'idx': ml_values, 'name_of_object': id_value}
+                # If not 'index', gather other contents
+                else:
+                    # If there are <id> elements inside the current child element, we get their content
+                    subtype_contents= [elem.text for elem in child.findall('id') if elem.text]
+                    subtype_contents = subtype_contents if subtype_contents else None  # If the list is empty, set None
                 break  # Break the loop because the type has been found
 
         # Adding color set data to the list
@@ -79,7 +90,8 @@ def get_colsets(globbox_block):
             'name': colset_name,    # Color set name from <id> element
             'layout': layout_text,   # Text representation of the set from the <layout> element
             'subtype': subtype,      # Color set type, determined by child elements (e.g. unit, enum, product)
-            'subtype_contents': subtype_contents     # Content of child elements, e.g. list of values (['A', 'B']) or None if there is no content
+            'subtype_contents': subtype_contents,     # Content of child elements, e.g. list of values (['A', 'B']) or None if there is no content
+            'index_values': index_values  # Values specific to 'index'
         })
 
 
