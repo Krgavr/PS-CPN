@@ -141,10 +141,10 @@ def create_snakes_net(data, colset_functions):
         condition = convert_condition(transition["condition"])
 
         if condition:
-            print(f"Adding Transition: {transition_name} with guard: {condition}")
+            # print(f"Adding Transition: {transition_name} with guard: {condition}")
             net.add_transition(Transition(transition_name, guard=Expression(condition)))
         else:
-            print(f"Adding Transition: {transition_name} without guard")
+            # print(f"Adding Transition: {transition_name} without guard")
             net.add_transition(Transition(transition_name))
 
     # Add arcs
@@ -161,7 +161,7 @@ def create_snakes_net(data, colset_functions):
             continue
 
         if arc_type == "PtoT":
-            print(f"Adding input arc: {place_name} -> {transition_name} with expression {expression}")
+            # print(f"Adding input arc: {place_name} -> {transition_name} with expression {expression}")
             arc_label = parse_arc_expression(expression, arc_type)
             if isinstance(arc_label, list):  # Multiple variables
                 for var in arc_label:
@@ -170,7 +170,7 @@ def create_snakes_net(data, colset_functions):
                 net.add_input(place_name, transition_name, arc_label)
 
         elif arc_type == "TtoP":
-            print(f"Adding output arc: {transition_name} -> {place_name} with expression {expression}")
+            # print(f"Adding output arc: {transition_name} -> {place_name} with expression {expression}")
             arc_label = parse_arc_expression(expression, arc_type)
             net.add_output(place_name, transition_name, arc_label)
 
