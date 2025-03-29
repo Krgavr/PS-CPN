@@ -6,7 +6,7 @@ from functions_for_parsing import *
 
 if __name__ == "__main__":
     
-    file_path = 'parsing_AB_model_2/model_AB.cpn'
+    file_path = 'parsing_AB_model/model_AB.cpn'
 
     # Loading file
     root = load_cpn_file(file_path)
