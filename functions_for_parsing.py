@@ -215,7 +215,7 @@ def get_places(page_block):
     places = []
     for place in page_block.findall('place'):
         place_id = place.attrib.get('id')  # Getting a place ID
-        text = place.find('text').text if place.find('text') is not None else None # Getting a place name
+        text = place.find('text').text.replace('\n', '') if place.find('text') is not None else None # Getting a place name
         type_element = place.find('type')  # Getting the place type
         place_type = (
             type_element.find('text').text
@@ -223,11 +223,13 @@ def get_places(page_block):
             else None
         )
         initmark_element = place.find('initmark')  # Getting the initial mark
+        initmark_text_element = initmark_element.find('text') if initmark_element is not None else None
         initmark = (
-            initmark_element.find('text').text
-            if initmark_element is not None and initmark_element.find('text') is not None
+            initmark_text_element.text.replace('\n', '')
+            if initmark_text_element is not None and initmark_text_element.text
             else None
         )
+
 
         # Adding location data to the list
         places.append({
@@ -246,7 +248,7 @@ def get_transitions(page_block):
     transitions = []
     for transition in page_block.findall('trans'):
         transition_id = transition.attrib.get('id')  # Getting the transition ID
-        text = transition.find('text').text if transition.find('text') is not None else None  # Getting the name of the transition
+        text = transition.find('text').text.replace('\n', '') if transition.find('text') is not None else None  # Getting the name of the transition
 
         # Finding conditions (cond)
         cond_element = transition.find('cond')
