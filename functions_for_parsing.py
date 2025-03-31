@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 from xml.etree import ElementTree as ET
 
 def load_cpn_file(file_path):
@@ -117,11 +118,11 @@ def get_values(globbox_block):
                 # Parse the string "val n = 5;" -> variable and value
                 parts = ml_text.split('=')
                 var_name = parts[0].replace('val', '').strip()  # Variable name
-                var_value = parts[1].replace(';', '').strip()   # Variable value
+                var_value = parts[1].replace(';', '').replace('\n', '').strip()   # Variable value
 
                 # Extract <layout> (if it is inside <ml>)
                 layout_element = ml.find('layout')
-                layout_text = layout_element.text.strip() if layout_element is not None and layout_element.text else None
+                layout_text = layout_element.text.replace('\n', '').strip() if layout_element is not None and layout_element.text else None
 
                 # Append the result to the list
                 values.append({
@@ -180,13 +181,13 @@ def get_functions(globbox_block):
         # Retrieve the 'id' attribute from the <ml> element
         ml_id = ml.attrib.get('id')
 
-        # Check if the line starts with "fun", indicating a function definition
+        #Check if the line starts with "fun", indicating a function definition
         if ml_text and ml_text.startswith('fun'):
             try:
                 # Split the text into the function name and function value
                 # Example: "fun Chopstick(ph(i)) = 1`cs(i) ++ 1`cs(if i = n then 1 else i+1);"
                 function_name = ml_text.split('=')[0].replace('fun', '').strip()  # Extract the function name
-                function_value = ml_text.split('=', 1)[1].strip().rstrip(';')      # Extract the function value and remove the semicolon
+                function_value = ml_text.split('=', 1)[1].strip().rstrip(';').replace('\n', ' ').replace('  ', ' ')      # Extract the function value and remove the semicolon
 
                 # Retrieve the <layout> element if it exists
                 layout_element = ml.find('layout')
@@ -215,7 +216,7 @@ def get_places(page_block):
     places = []
     for place in page_block.findall('place'):
         place_id = place.attrib.get('id')  # Getting a place ID
-        text = place.find('text').text.replace('\n', '') if place.find('text') is not None else None # Getting a place name
+        text = place.find('text').text.replace('\n', '').replace(' ', '') if place.find('text') is not None else None # Getting a place name
         type_element = place.find('type')  # Getting the place type
         place_type = (
             type_element.find('text').text
@@ -302,7 +303,9 @@ def get_arcs(page_block):
 
         # Getting the edge expression
         expression_element = arc.find('annot/text')  # Search for expression annotation
-        expression = expression_element.text if expression_element is not None else None
+        expression = expression_element.text.replace('\n', ' ') if expression_element is not None else None
+        if expression:
+            expression = ' '.join(expression.replace('\n', ' ').split())
 
         # Adding arc data to the list
         arcs.append({
