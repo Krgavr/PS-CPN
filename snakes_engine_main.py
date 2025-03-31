@@ -6,6 +6,8 @@ from nets import PetriNet
 import re
 
 # Function to create colset functions based on file data
+from snakes.nets import Variable
+
 def create_colset_functions(colsets):
     colset_functions = {}
     for colset in colsets:
@@ -19,7 +21,8 @@ def create_colset_functions(colsets):
         elif colset_type == "int":
             colset_functions[colset_name] = lambda x: isinstance(x, int)
         elif colset_type == "enum" and subtype_contents:
-            colset_functions[colset_name] = lambda x, values=subtype_contents: x in values
+            # If x is a Variable, convert it to a string before comparing it.
+            colset_functions[colset_name] = lambda x, values=subtype_contents: (str(x) if isinstance(x, Variable) else x) in values
         elif colset_type == "product" and subtype_contents:
             colset_functions[colset_name] = lambda x, types=subtype_contents: isinstance(x, tuple) and len(x) == len(types)
         elif colset_type == "string":
@@ -28,16 +31,52 @@ def create_colset_functions(colsets):
             colset_functions[colset_name] = lambda x: True  # Default check passes
     return colset_functions
 
+
 # Function to parse initmark into MultiSet
 def parse_initmark(initmark):
     if not initmark:
         return MultiSet()
-    token_pattern = r"(\d+)`(\w+)"
-    tokens = re.findall(token_pattern, initmark)
+    
     flattened_tokens = []
-    for count, value in tokens:
-        flattened_tokens.extend([value] * int(count))
+    parts = initmark.split("++")
+    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1, “COL ”) or 2`B
+
+    for part in parts:
+        match = re.match(token_pattern, part.strip())
+        if match:
+            count = int(match.group(1))
+            value = match.group(2).strip()
+
+            # tuple
+            if value.startswith("(") and value.endswith(")"):
+                inner = value[1:-1]
+                items = [v.strip() for v in re.split(r",(?![^()]*\))", inner)]
+
+                parsed_items = []
+                for item in items:
+                    # delete the quotation marks, if any.
+                    if item.startswith('"') and item.endswith('"'):
+                        parsed_items.append(item[1:-1])
+                    elif item.isdigit():
+                        parsed_items.append(int(item))
+                    else:
+                        parsed_items.append(item)
+                token = tuple(parsed_items)
+            else:
+                # Simple value
+                if value.startswith('"') and value.endswith('"'):
+                    token = value[1:-1]
+                elif value.isdigit():
+                    token = int(value)
+                else:
+                    token = value
+
+            flattened_tokens.extend([token] * count)
+
     return MultiSet(flattened_tokens)
+
+
+
 
 # Function to create variables
 def create_variables(data):
@@ -66,30 +105,37 @@ def convert_condition(condition):
 # Function to parse arc expressions
 def parse_arc_expression(expression, arc_type):
     """
-    Converts arc expressions from ML to Variable or Tuple.
-    Input arcs (PtoT): Variable.
-    Output arcs (TtoP): Tuple.
+    Converts arc expressions from ML to Variable, Tuple or Expression.
+    Input arcs (PtoT): usually Variables or Tuples.
+    Output arcs (TtoP): same, but allow expressions like n+1.
     """
     if not expression:
-        return MultiSet()
-    token_pattern = r"(\d+)`(\w+|\(.*?\))"
-    if arc_type == "PtoT":
-        tokens = re.findall(token_pattern, expression)
-        variables = []
-        for count, value in tokens:
-            for _ in range(int(count)):
-                variables.append(Variable(value.strip("()")))
-        return variables[0] if len(variables) == 1 else MultiSet(variables)
-    elif arc_type == "TtoP":
-        tokens = re.findall(token_pattern, expression)
-        result_tuple = []
-        for count, value in tokens:
-            if value.startswith("(") and value.endswith(")"):
-                tuple_variables = [Variable(v.strip()) for v in value[1:-1].split(",")]
-                result_tuple.extend([tuple_variables] * int(count))
-            else:
-                result_tuple.append(Variable(value))
-        return Tuple(result_tuple[0]) if len(result_tuple) == 1 else result_tuple
+        return None
+
+    expression = expression.strip()
+
+    token_pattern = r"(\d+)`(.+)"  # For example: 1`in1, 1`(in1,in2), 1`n+1
+    match = re.match(token_pattern, expression)
+    if match:
+        count = int(match.group(1))
+        value = match.group(2).strip()
+    else:
+        value = expression.strip()  
+
+    # A tuple of the form (in1,in2)
+    if value.startswith("(") and value.endswith(")"):
+        inner = value[1:-1]
+        items = [item.strip() for item in inner.split(",")]
+        variables = [Variable(i) for i in items]
+        return Tuple(variables)
+
+    # Expression: n+1, d+2, etc.
+    if re.search(r"[+*/-]", value):
+        return Expression(value)
+
+    # Simple variable
+    return Variable(value)
+
 
 # Main function to create a Petri net
 def create_snakes_net(data, colset_functions):
