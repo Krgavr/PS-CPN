@@ -1,5 +1,6 @@
 import sys
 import os
+import random
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from functions_for_parsing import collect_all_data, load_cpn_file, get_page_block, get_globbox_block
@@ -29,7 +30,7 @@ print("\nVariables:")
 for var_name, var_type in variables.items():
     print(f"Variable: {var_name}, Type: {var_type}")
 
-net.draw("snakes_1_model/ex1.png", engine="dot")
+net.draw("snakes_2_model/ex1.png", engine="dot")
 
 print("\n=== Full Petri Net Description ===")
 
@@ -54,26 +55,27 @@ max_steps = 30  # let's restrict it in order not to get into an infinite loop
 step = 0
 
 while step < max_steps:
-    progress = False
     print(f"\n--- Step {step + 1} ---")
-
+    
+    # Collect a list of all transitions with their possible bindings
+    available = []
     for transition in net.transition():
         modes = transition.modes()
         if modes:
-            print(f"Transition '{transition.name}' can fire with {len(modes)} possible bindings.")
-            binding = modes[0]  # take the first available binding
-            print(f"Firing '{transition.name}' with binding: {binding}")
-            transition.fire(binding)
-            progress = True
-
-            # Saving the picture after firing
-            output_path = f"snakes_1_model/img/step_{step + 1}_{transition.name}.png"
-            print(f"Saving snapshot to {output_path}")
-            net.draw(output_path, engine="dot")
-
-            break  # one firing per step
-
-    if not progress:
+            for mode in modes:
+                available.append((transition, mode))
+    
+    if available:
+        # Randomly select a pair (transition, binding)
+        chosen_transition, binding = random.choice(available)
+        print(f"Transition '{chosen_transition.name}' can fire with binding: {binding}")
+        chosen_transition.fire(binding)
+        
+        # Save a snapshot of the network status
+        output_path = f"snakes_2_model/img/step_{step + 1}_{chosen_transition.name}.png"
+        print(f"Saving snapshot to {output_path}")
+        net.draw(output_path, engine="dot")
+    else:
         print("No more transitions can fire.")
         break
 
@@ -83,4 +85,4 @@ print("\nFinal state of places:")
 for place in net.place():
     print(f"Place: {place.name}, Tokens: {list(place.tokens)}")
 
-net.draw("snakes_1_model/ex2.png", engine="dot")
+net.draw("snakes_2_model/ex2.png", engine="dot")

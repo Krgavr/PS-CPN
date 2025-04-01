@@ -33,13 +33,17 @@ def create_colset_functions(colsets):
 
 
 # Function to parse initmark into MultiSet
-def parse_initmark(initmark):
+def parse_initmark(initmark, values_dict=None):
     if not initmark:
         return MultiSet()
-    
+
+    # Substitution of values from the global block
+    if values_dict and initmark in values_dict:
+        initmark = values_dict[initmark]
+
     flattened_tokens = []
     parts = initmark.split("++")
-    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1, “COL ”) or 2`B
+    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1,"COL") or 2`B
 
     for part in parts:
         match = re.match(token_pattern, part.strip())
@@ -47,14 +51,12 @@ def parse_initmark(initmark):
             count = int(match.group(1))
             value = match.group(2).strip()
 
-            # tuple
             if value.startswith("(") and value.endswith(")"):
                 inner = value[1:-1]
                 items = [v.strip() for v in re.split(r",(?![^()]*\))", inner)]
 
                 parsed_items = []
                 for item in items:
-                    # delete the quotation marks, if any.
                     if item.startswith('"') and item.endswith('"'):
                         parsed_items.append(item[1:-1])
                     elif item.isdigit():
@@ -63,7 +65,6 @@ def parse_initmark(initmark):
                         parsed_items.append(item)
                 token = tuple(parsed_items)
             else:
-                # Simple value
                 if value.startswith('"') and value.endswith('"'):
                     token = value[1:-1]
                 elif value.isdigit():
@@ -102,45 +103,89 @@ def convert_condition(condition):
     condition = condition.replace("!==", "!=")
     return condition
 
+
+def convert_ml_if_expression(expr):
+    """
+    Converts ML if-then-else expressions to valid Python.
+    Example:
+        'if success then 1`(n,d) else empty'
+        →  ([(n,d)]*1 if success else [])
+    """
+    expr = expr.replace("^", "+")  # concatenation
+
+    if_match = re.match(r"if (.+?) then (.+?) else (.+)", expr)
+    if if_match:
+        condition = if_match.group(1).strip()
+        then_expr = if_match.group(2).strip()
+        else_expr = if_match.group(3).strip()
+
+        # Convert the condition: replace '=' with '==' (but leave '==' untouched)
+        condition = re.sub(r"(?<![=!])=(?!=)", "==", condition)
+
+        then = parse_token_expression(then_expr)
+        else_ = "[]" if else_expr == "empty" else parse_token_expression(else_expr)
+
+        return f"({then} if {condition} else {else_})"
+    return expr
+
+
+def parse_token_expression(expr):
+    """
+    Converts expressions of the form 1`x or 2`(a,b) to Python: [x]*1 or [(a,b)]*2.
+    If the expression does not match the pattern, replaces '^' with '+'.
+    """
+    token_pattern = r"(\d+)`(.+)"
+    match = re.match(token_pattern, expr)
+    if match:
+        count = int(match.group(1))
+        value = match.group(2).strip()
+        return f"[{value}]*{count}"
+    return expr.replace("^", "+")
+
+
 # Function to parse arc expressions
 def parse_arc_expression(expression, arc_type):
-    """
-    Converts arc expressions from ML to Variable, Tuple or Expression.
-    Input arcs (PtoT): usually Variables or Tuples.
-    Output arcs (TtoP): same, but allow expressions like n+1.
-    """
     if not expression:
         return None
 
     expression = expression.strip()
 
-    token_pattern = r"(\d+)`(.+)"  # For example: 1`in1, 1`(in1,in2), 1`n+1
+    if expression == "empty":
+        return MultiSet()
+
+    # ML-style if-then-else
+    if expression.startswith("if") and "then" in expression and "else" in expression:
+        python_expr = convert_ml_if_expression(expression)
+        return Expression(python_expr)
+
+    token_pattern = r"(\d+)`(.+)"
     match = re.match(token_pattern, expression)
     if match:
         count = int(match.group(1))
         value = match.group(2).strip()
     else:
-        value = expression.strip()  
+        value = expression
 
-    # A tuple of the form (in1,in2)
     if value.startswith("(") and value.endswith(")"):
-        inner = value[1:-1]
-        items = [item.strip() for item in inner.split(",")]
+        items = [item.strip() for item in value[1:-1].split(",")]
         variables = [Variable(i) for i in items]
         return Tuple(variables)
 
-    # Expression: n+1, d+2, etc.
+    if "^" in value:
+        return Expression(value.replace("^", "+"))
+
     if re.search(r"[+*/-]", value):
         return Expression(value)
 
-    # Simple variable
     return Variable(value)
+
 
 
 # Main function to create a Petri net
 def create_snakes_net(data, colset_functions):
     net = PetriNet("CPN_Model")
     places_info = []
+    values_dict = {val["name"]: val["value"] for val in data.get("values", [])}
     variables = create_variables(data)
 
     for place in data["places"]:
@@ -148,7 +193,7 @@ def create_snakes_net(data, colset_functions):
         place_type = place["type"]
         initmark = place["initmark"]
         is_valid_func = colset_functions.get(place_type, lambda x: True)
-        tokens = parse_initmark(initmark)
+        tokens = parse_initmark(initmark, values_dict)
         net.add_place(Place(place_name, tokens=tokens, check=is_valid_func))
         places_info.append((place_name, tokens, place_type))
 
@@ -171,17 +216,15 @@ def create_snakes_net(data, colset_functions):
         transition_name = next((t["text"] for t in data["transitions"] if t["transition_id"] == transition_id), None)
         if not place_name or not transition_name:
             continue
+
+        arc_label = parse_arc_expression(expression, arc_type)
+
         if arc_type == "PtoT":
-            print(f"Adding input arc: {place_name} -> {transition_name} with expression {expression}")
-            arc_label = parse_arc_expression(expression, arc_type)
-            if isinstance(arc_label, list):
-                for var in arc_label:
-                    net.add_input(place_name, transition_name, var)
-            else:
-                net.add_input(place_name, transition_name, arc_label)
+            net.add_input(place_name, transition_name, arc_label)
         elif arc_type == "TtoP":
-            print(f"Adding output arc: {transition_name} -> {place_name} with expression {expression}")
-            arc_label = parse_arc_expression(expression, arc_type)
+            net.add_output(place_name, transition_name, arc_label)
+        elif arc_type == "BOTHDIR":
+            net.add_input(place_name, transition_name, arc_label)
             net.add_output(place_name, transition_name, arc_label)
 
     return net, places_info, variables
