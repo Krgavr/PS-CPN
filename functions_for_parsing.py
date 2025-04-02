@@ -181,7 +181,7 @@ def get_functions(globbox_block):
         # Retrieve the 'id' attribute from the <ml> element
         ml_id = ml.attrib.get('id')
 
-        #Check if the line starts with "fun", indicating a function definition
+        # Check if the line starts with "fun", indicating a function definition
         if ml_text and ml_text.startswith('fun'):
             try:
                 # Split the text into the function name and function value
