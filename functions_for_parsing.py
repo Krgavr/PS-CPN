@@ -1,6 +1,25 @@
 import pandas as pd
-import re
 from xml.etree import ElementTree as ET
+import re
+
+def clean(text):
+    return re.sub(r'\s+', ' ', text).strip() if text else None
+
+
+def find_equal_outside_brackets(s):
+    """
+    Returns the index of the '=' sign outside all bracket types.
+    """
+    depth = 0
+    for i, char in enumerate(s):
+        if char in '({[':
+            depth += 1
+        elif char in ')}]':
+            depth -= 1
+        elif char == '=' and depth == 0:
+            return i
+    return -1
+
 
 def load_cpn_file(file_path):
     """
@@ -61,7 +80,7 @@ def get_colsets(globbox_block):
 
         # Getting layout from child <layout>
         layout_element = color.find('layout')
-        layout_text = layout_element.text if layout_element is not None else None
+        layout_text = clean(layout_element.text) if layout_element is not None else None
 
         # Determine the type (subtype) based on the first element between <id> and <layout>
         subtype = None  # Initialize the subtype variable as None
@@ -118,11 +137,16 @@ def get_values(globbox_block):
                 # Parse the string "val n = 5;" -> variable and value
                 parts = ml_text.split('=')
                 var_name = parts[0].replace('val', '').strip()  # Variable name
-                var_value = parts[1].replace(';', '').replace('\n', '').strip()   # Variable value
+                raw_value = parts[1].replace(';', '') 
+                var_value = clean(raw_value)
+
+                #Skip the standard priorities
+                if var_name in ['P_HIGH', 'P_NORMAL', 'P_LOW']:
+                    continue
 
                 # Extract <layout> (if it is inside <ml>)
                 layout_element = ml.find('layout')
-                layout_text = layout_element.text.replace('\n', '').strip() if layout_element is not None and layout_element.text else None
+                layout_text = clean(layout_element.text) if layout_element is not None else None
 
                 # Append the result to the list
                 values.append({
@@ -155,7 +179,7 @@ def get_vars(globbox_block):
 
         # Getting layout from child <layout>
         layout_element = var.find('layout')
-        layout_text = layout_element.text if layout_element is not None else None
+        layout_text = clean(layout_element.text) if layout_element is not None else None
 
         # Adding variable data to the list
         vars.append({
@@ -184,20 +208,26 @@ def get_functions(globbox_block):
         # Check if the line starts with "fun", indicating a function definition
         if ml_text and ml_text.startswith('fun'):
             try:
-                # Split the text into the function name and function value
-                # Example: "fun Chopstick(ph(i)) = 1`cs(i) ++ 1`cs(if i = n then 1 else i+1);"
-                function_name = ml_text.split('=')[0].replace('fun', '').strip()  # Extract the function name
-                function_value = ml_text.split('=', 1)[1].strip().rstrip(';').replace('\n', ' ').replace('  ', ' ')      # Extract the function value and remove the semicolon
+                # # Split the text into the function name and function value
+                # # Example: "fun Chopstick(ph(i)) = 1`cs(i) ++ 1`cs(if i = n then 1 else i+1);"
+                function_body = ml_text.replace('fun', '', 1).strip()
+
+                eq_index = find_equal_outside_brackets(function_body)
+                if eq_index == -1:
+                    continue  
+
+                name_part = clean(function_body[:eq_index])
+                value_part = clean(function_body[eq_index+1:].rstrip(';'))
 
                 # Retrieve the <layout> element if it exists
                 layout_element = ml.find('layout')
-                layout_text = layout_element.text.strip().replace('\n', ' ') if layout_element is not None and layout_element.text else None
+                layout_text = clean(layout_element.text) if layout_element is not None and layout_element.text else None
 
                 # Append the function information to the list as a dictionary
                 functions.append({
                     'id': ml_id,
-                    'name': function_name,  # The name of the function
-                    'value': function_value,  # The body of the function
+                    'name': name_part,    # The name of the function
+                    'value': value_part,  # The body of the function
                     'layout': layout_text,           # Layout text if available
                 })
             except IndexError:
@@ -216,7 +246,7 @@ def get_places(page_block):
     places = []
     for place in page_block.findall('place'):
         place_id = place.attrib.get('id')  # Getting a place ID
-        text = place.find('text').text.replace('\n', '').replace(' ', '') if place.find('text') is not None else None # Getting a place name
+        text = clean(place.find('text').text) if place.find('text') is not None else None
         type_element = place.find('type')  # Getting the place type
         place_type = (
             type_element.find('text').text
@@ -225,12 +255,7 @@ def get_places(page_block):
         )
         initmark_element = place.find('initmark')  # Getting the initial mark
         initmark_text_element = initmark_element.find('text') if initmark_element is not None else None
-        initmark = (
-            initmark_text_element.text.replace('\n', '')
-            if initmark_text_element is not None and initmark_text_element.text
-            else None
-        )
-
+        initmark = clean(initmark_text_element.text) if initmark_text_element is not None else None
 
         # Adding location data to the list
         places.append({
@@ -249,31 +274,24 @@ def get_transitions(page_block):
     transitions = []
     for transition in page_block.findall('trans'):
         transition_id = transition.attrib.get('id')  # Getting the transition ID
-        text = transition.find('text').text.replace('\n', '') if transition.find('text') is not None else None  # Getting the name of the transition
+        #text = transition.find('text').text.replace('\n', '') if transition.find('text') is not None else None  # Getting the name of the transition
+        text = clean(transition.find('text').text) if transition.find('text') is not None else None
 
         # Finding conditions (cond)
         cond_element = transition.find('cond')
-        condition = (
-            cond_element.find('text').text if cond_element is not None and cond_element.find('text') is not None else None
-        )  # Getting a condition, e.g. [in1<>in2]
+        condition = clean(cond_element.find('text').text) if cond_element is not None and cond_element.find('text') is not None else None
 
         # Finding the time constraint (time) and its extraction
         time_element = transition.find('time')
-        time_text = (
-            time_element.find('text').text if time_element is not None and time_element.find('text') is not None else None
-        )
+        time_text = clean(time_element.find('text').text) if time_element is not None and time_element.find('text') is not None else None
 
         # Finding the code and extracting it
         code_element = transition.find('code')
-        code_text = (
-            code_element.find('text').text if code_element is not None and code_element.find('text') is not None else None
-        )
+        code_text = clean(code_element.find('text').text) if code_element is not None and code_element.find('text') is not None else None
 
         # Finding priority and extracting it
         priority_element = transition.find('priority')
-        priority_text = (
-            priority_element.find('text').text if priority_element is not None and priority_element.find('text') is not None else None
-        )
+        priority_text = clean(priority_element.find('text').text) if priority_element is not None and priority_element.find('text') is not None else None
 
         # Adding transition dates to the list
         transitions.append({
@@ -303,9 +321,7 @@ def get_arcs(page_block):
 
         # Getting the edge expression
         expression_element = arc.find('annot/text')  # Search for expression annotation
-        expression = expression_element.text.replace('\n', ' ') if expression_element is not None else None
-        if expression:
-            expression = ' '.join(expression.replace('\n', ' ').split())
+        expression = clean(expression_element.text) if expression_element is not None else None
 
         # Adding arc data to the list
         arcs.append({
