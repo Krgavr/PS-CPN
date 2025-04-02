@@ -119,6 +119,10 @@ def get_values(globbox_block):
                 parts = ml_text.split('=')
                 var_name = parts[0].replace('val', '').strip()  # Variable name
                 var_value = parts[1].replace(';', '').replace('\n', '').strip()   # Variable value
+                
+                #Skip the standard priorities
+                if var_name in ['P_HIGH', 'P_NORMAL', 'P_LOW']:
+                    continue
 
                 # Extract <layout> (if it is inside <ml>)
                 layout_element = ml.find('layout')
