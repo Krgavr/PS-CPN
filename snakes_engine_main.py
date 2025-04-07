@@ -21,7 +21,7 @@ def create_colset_functions(colsets):
         elif colset_type == "int":
             colset_functions[colset_name] = lambda x: isinstance(x, int)
         elif colset_type == "enum" and subtype_contents:
-            # If x is a Variable, convert it to a string before comparing it.
+            # Если x — Variable, сначала приводим к строке
             colset_functions[colset_name] = lambda x, values=subtype_contents: (str(x) if isinstance(x, Variable) else x) in values
         elif colset_type == "product" and subtype_contents:
             colset_functions[colset_name] = lambda x, types=subtype_contents: isinstance(x, tuple) and len(x) == len(types)
@@ -37,13 +37,13 @@ def parse_initmark(initmark, values_dict=None):
     if not initmark:
         return MultiSet()
 
-    # Substitution of values from the global block
+    # Подстановка значений из глобального блока (если имеется)
     if values_dict and initmark in values_dict:
         initmark = values_dict[initmark]
 
     flattened_tokens = []
     parts = initmark.split("++")
-    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1,"COL") or 2`B
+    token_pattern = r"(\d+)`(.+)"  # Например: 1`(1,"COL") или 2`B
 
     for part in parts:
         match = re.match(token_pattern, part.strip())
@@ -54,7 +54,6 @@ def parse_initmark(initmark, values_dict=None):
             if value.startswith("(") and value.endswith(")"):
                 inner = value[1:-1]
                 items = [v.strip() for v in re.split(r",(?![^()]*\))", inner)]
-
                 parsed_items = []
                 for item in items:
                     if item.startswith('"') and item.endswith('"'):
@@ -77,8 +76,6 @@ def parse_initmark(initmark, values_dict=None):
     return MultiSet(flattened_tokens)
 
 
-
-
 # Function to create variables
 def create_variables(data):
     variables = {}
@@ -91,8 +88,8 @@ def create_variables(data):
 # Function to convert ML-style conditions into Python
 def convert_condition(condition):
     """
-    Converts ML conditions to Python.
-    Example:
+    Преобразует условия ML в Python.
+    Пример:
         [in1<>in2] -> in1 != in2
     """
     if not condition:
@@ -106,33 +103,34 @@ def convert_condition(condition):
 
 def convert_ml_if_expression(expr):
     """
-    Converts ML if-then-else expressions to valid Python.
-    Example:
-        'if success then 1`(n,d) else empty'
-        →  ([(n,d)]*1 if success else [])
+    Преобразует выражения вида if-then-else из ML в валидный Python.
+    
+    Примеры:
+      'if success then 1`n else empty'
+          →  ( [n]*1 if success else [] )
+      'if n=k then data^d else data'
+          →  (data+d if n==k else data)
+      'if n=k then k+1 else k'
+          →  (k+1 if n==k else k)
     """
-    expr = expr.replace("^", "+")  # concatenation
-
+    expr = expr.replace("^", "+")  # заменяем '^' на '+'
     if_match = re.match(r"if (.+?) then (.+?) else (.+)", expr)
     if if_match:
         condition = if_match.group(1).strip()
         then_expr = if_match.group(2).strip()
         else_expr = if_match.group(3).strip()
-
-        # Convert the condition: replace '=' with '==' (but leave '==' untouched)
+        # Преобразуем условие: заменяем одиночное '=' на '=='
         condition = re.sub(r"(?<![=!])=(?!=)", "==", condition)
-
         then = parse_token_expression(then_expr)
         else_ = "[]" if else_expr == "empty" else parse_token_expression(else_expr)
-
         return f"({then} if {condition} else {else_})"
     return expr
 
 
 def parse_token_expression(expr):
     """
-    Converts expressions of the form 1`x or 2`(a,b) to Python: [x]*1 or [(a,b)]*2.
-    If the expression does not match the pattern, replaces '^' with '+'.
+    Преобразует выражения вида 1`x или 2`(a,b) в Python: [x]*1 или [(a,b)]*2.
+    Если выражение не соответствует шаблону, заменяет '^' на '+'.
     """
     token_pattern = r"(\d+)`(.+)"
     match = re.match(token_pattern, expr)
@@ -150,13 +148,15 @@ def parse_arc_expression(expression, arc_type):
 
     expression = expression.strip()
 
+    # Если выражение — if-then-else, просто берём часть then (заглушка)
+    if expression.startswith("if") and "then" in expression and "else" in expression:
+        if_match = re.match(r"if .+? then (.+?) else .+", expression)
+        if if_match:
+            then_expr = if_match.group(1).strip()
+            return parse_arc_expression(then_expr, arc_type)
+
     if expression == "empty":
         return MultiSet()
-
-    # ML-style if-then-else
-    if expression.startswith("if") and "then" in expression and "else" in expression:
-        python_expr = convert_ml_if_expression(expression)
-        return Expression(python_expr)
 
     token_pattern = r"(\d+)`(.+)"
     match = re.match(token_pattern, expression)
@@ -178,7 +178,6 @@ def parse_arc_expression(expression, arc_type):
         return Expression(value)
 
     return Variable(value)
-
 
 
 # Main function to create a Petri net

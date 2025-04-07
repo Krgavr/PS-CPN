@@ -1,0 +1,310 @@
+10:34:32 - Loading and parsing model...
+10:34:32 - Declarations and data successfully loaded.
+10:34:32 - 
+Petri Net Description:
+10:34:32 - CPN_Model
+10:34:32 - 
+Places and their tokens:
+10:34:32 - Place: PacketsToSend, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], CheckType: NOxDATA
+10:34:32 - Place: B, Tokens: [], CheckType: NOxDATA
+10:34:32 - Place: DataReceived, Tokens: [''], CheckType: DATA
+10:34:32 - Place: NextSend, Tokens: [1], CheckType: NO
+10:34:32 - Place: A, Tokens: [], CheckType: NOxDATA
+10:34:32 - Place: D, Tokens: [], CheckType: NO
+10:34:32 - Place: C, Tokens: [], CheckType: NO
+10:34:32 - Place: NextRec, Tokens: [1], CheckType: NO
+10:34:32 - 
+Variables:
+10:34:32 - Variable: n, Type: NO
+10:34:32 - Variable: k, Type: NO
+10:34:32 - Variable: d, Type: DATA
+10:34:32 - Variable: data, Type: DATA
+10:34:32 - Variable: success, Type: BOOL
+10:34:32 - 
+=== Full Petri Net Description ===
+10:34:32 - 
+Places:
+10:34:32 - Place: PacketsToSend, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], Check: check
+10:34:32 - Place: B, Tokens: [], Check: check
+10:34:32 - Place: DataReceived, Tokens: [''], Check: check
+10:34:32 - Place: NextSend, Tokens: [1], Check: check
+10:34:32 - Place: A, Tokens: [], Check: check
+10:34:32 - Place: D, Tokens: [], Check: check
+10:34:32 - Place: C, Tokens: [], Check: check
+10:34:32 - Place: NextRec, Tokens: [1], Check: check
+10:34:32 - 
+Transitions:
+10:34:32 - Transition: SendPacket, Guard: True
+10:34:32 - Transition: TransmitPacket, Guard: True
+10:34:32 - Transition: ReceivePacket, Guard: True
+10:34:32 - Transition: TransmitAck, Guard: True
+10:34:32 - Transition: ReceiveAck, Guard: True
+10:34:32 - 
+Arcs:
+10:34:32 - Input Arc: PacketsToSend -> SendPacket, Label: (n, d)
+10:34:32 - Input Arc: NextSend -> SendPacket, Label: n
+10:34:32 - Output Arc: SendPacket -> PacketsToSend, Label: (n, d)
+10:34:32 - Output Arc: SendPacket -> NextSend, Label: n
+10:34:32 - Output Arc: SendPacket -> A, Label: (n, d)
+10:34:32 - Input Arc: A -> TransmitPacket, Label: (n, d)
+10:34:32 - Output Arc: TransmitPacket -> B, Label: (n, d)
+10:34:32 - Input Arc: B -> ReceivePacket, Label: (n, d)
+10:34:32 - Input Arc: DataReceived -> ReceivePacket, Label: data
+10:34:32 - Input Arc: NextRec -> ReceivePacket, Label: k
+10:34:32 - Output Arc: ReceivePacket -> DataReceived, Label: data+d
+10:34:32 - Output Arc: ReceivePacket -> C, Label: k+1
+10:34:32 - Output Arc: ReceivePacket -> NextRec, Label: k+1
+10:34:32 - Input Arc: C -> TransmitAck, Label: n
+10:34:32 - Output Arc: TransmitAck -> D, Label: n
+10:34:32 - Input Arc: D -> ReceiveAck, Label: n
+10:34:32 - Input Arc: NextSend -> ReceiveAck, Label: k
+10:34:32 - Output Arc: ReceiveAck -> NextSend, Label: n
+10:34:32 - 
+Starting simulation loop...
+10:34:32 - 
+--- Step 1 ---
+10:34:32 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:32 - Saving snapshot to snakes_2_model/img/step_1_SendPacket.png
+10:34:33 - 
+--- Step 2 ---
+10:34:33 - Simulated random decision for 'TransmitPacket' → 0
+10:34:33 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:33 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:33 - 
+--- Step 3 ---
+10:34:33 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:33 - Saving snapshot to snakes_2_model/img/step_3_SendPacket.png
+10:34:33 - 
+--- Step 4 ---
+10:34:33 - Simulated random decision for 'TransmitPacket' → 0
+10:34:33 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:33 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:33 - 
+--- Step 5 ---
+10:34:33 - Simulated random decision for 'TransmitPacket' → 0
+10:34:33 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:33 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:33 - 
+--- Step 6 ---
+10:34:33 - Simulated random decision for 'TransmitPacket' → 1
+10:34:33 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:33 - Saving snapshot to snakes_2_model/img/step_6_TransmitPacket.png
+10:34:34 - 
+--- Step 7 ---
+10:34:34 - Firing 'ReceivePacket' with binding: {n -> 1, d -> 'COL', data -> '', k -> 1}
+10:34:34 - Saving snapshot to snakes_2_model/img/step_7_ReceivePacket.png
+10:34:34 - 
+--- Step 8 ---
+10:34:34 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:34 - Saving snapshot to snakes_2_model/img/step_8_SendPacket.png
+10:34:35 - 
+--- Step 9 ---
+10:34:35 - Simulated random decision for 'TransmitPacket' → 1
+10:34:35 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:35 - Saving snapshot to snakes_2_model/img/step_9_TransmitPacket.png
+10:34:35 - 
+--- Step 10 ---
+10:34:35 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:35 - Saving snapshot to snakes_2_model/img/step_10_SendPacket.png
+10:34:36 - 
+--- Step 11 ---
+10:34:36 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:36 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:36 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:36 - 
+--- Step 12 ---
+10:34:36 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:36 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:36 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:36 - 
+--- Step 13 ---
+10:34:36 - Simulated random decision for 'TransmitPacket' → 1
+10:34:36 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:36 - Saving snapshot to snakes_2_model/img/step_13_TransmitPacket.png
+10:34:36 - 
+--- Step 14 ---
+10:34:36 - Firing 'TransmitAck' with binding: {n -> 2}
+10:34:36 - Saving snapshot to snakes_2_model/img/step_14_TransmitAck.png
+10:34:37 - 
+--- Step 15 ---
+10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:37 - 
+--- Step 16 ---
+10:34:37 - Simulated random success for 'ReceiveAck' → 1
+10:34:37 - Firing 'ReceiveAck' with binding: {n -> 2, k -> 1}
+10:34:37 - Saving snapshot to snakes_2_model/img/step_16_ReceiveAck.png
+10:34:37 - 
+--- Step 17 ---
+10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:37 - 
+--- Step 18 ---
+10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:37 - 
+--- Step 19 ---
+10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:37 - 
+--- Step 20 ---
+10:34:37 - Simulated random decision for 'TransmitPacket' → 0
+10:34:37 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:37 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:37 - 
+--- Step 21 ---
+10:34:37 - Simulated random decision for 'TransmitPacket' → 0
+10:34:37 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:37 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:37 - 
+--- Step 22 ---
+10:34:37 - Firing 'SendPacket' with binding: {n -> 2, d -> 'OUR'}
+10:34:37 - Saving snapshot to snakes_2_model/img/step_22_SendPacket.png
+10:34:38 - 
+--- Step 23 ---
+10:34:38 - Simulated random decision for 'TransmitPacket' → 1
+10:34:38 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
+10:34:38 - Saving snapshot to snakes_2_model/img/step_23_TransmitPacket.png
+10:34:38 - 
+--- Step 24 ---
+10:34:38 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:38 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:38 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:38 - 
+--- Step 25 ---
+10:34:38 - Simulated random decision for 'TransmitPacket' → 0
+10:34:38 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:38 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:38 - 
+--- Step 26 ---
+10:34:38 - Simulated random decision for 'TransmitPacket' → 0
+10:34:38 - Condition not met for 'TransmitPacket', executing alternative branch.
+10:34:38 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
+10:34:38 - 
+--- Step 27 ---
+10:34:38 - Simulated random decision for 'TransmitPacket' → 1
+10:34:38 - Firing 'TransmitPacket' with binding: {n -> 2, d -> 'OUR'}
+10:34:38 - Saving snapshot to snakes_2_model/img/step_27_TransmitPacket.png
+10:34:39 - 
+--- Step 28 ---
+10:34:39 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
+10:34:39 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:39 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:39 - 
+--- Step 29 ---
+10:34:39 - Firing 'ReceivePacket' with binding: {n -> 2, d -> 'OUR', data -> 'COL', k -> 2}
+10:34:39 - Saving snapshot to snakes_2_model/img/step_29_ReceivePacket.png
+10:34:39 - 
+--- Step 30 ---
+10:34:39 - Firing 'TransmitAck' with binding: {n -> 3}
+10:34:39 - Saving snapshot to snakes_2_model/img/step_30_TransmitAck.png
+10:34:40 - 
+--- Step 31 ---
+10:34:40 - Firing 'SendPacket' with binding: {n -> 2, d -> 'OUR'}
+10:34:40 - Saving snapshot to snakes_2_model/img/step_31_SendPacket.png
+10:34:40 - 
+--- Step 32 ---
+10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:40 - 
+--- Step 33 ---
+10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:40 - 
+--- Step 34 ---
+10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:40 - 
+--- Step 35 ---
+10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:40 - 
+--- Step 36 ---
+10:34:40 - Firing 'SendPacket' with binding: {n -> 2, d -> 'OUR'}
+10:34:40 - Saving snapshot to snakes_2_model/img/step_36_SendPacket.png
+10:34:41 - 
+--- Step 37 ---
+10:34:41 - Simulated random decision for 'TransmitPacket' → 1
+10:34:41 - Firing 'TransmitPacket' with binding: {n -> 2, d -> 'OUR'}
+10:34:41 - Saving snapshot to snakes_2_model/img/step_37_TransmitPacket.png
+10:34:41 - 
+--- Step 38 ---
+10:34:41 - Simulated random success for 'ReceiveAck' → 0
+10:34:41 - Condition not met for 'ReceiveAck', executing alternative branch.
+10:34:41 - Alternative action for 'ReceiveAck': token returns to its original place (simulated).
+10:34:41 - 
+--- Step 39 ---
+10:34:41 - Simulated random success for 'ReceiveAck' → 1
+10:34:41 - Firing 'ReceiveAck' with binding: {n -> 3, k -> 2}
+10:34:41 - Saving snapshot to snakes_2_model/img/step_39_ReceiveAck.png
+10:34:41 - 
+--- Step 40 ---
+10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:41 - 
+--- Step 41 ---
+10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:41 - 
+--- Step 42 ---
+10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:41 - 
+--- Step 43 ---
+10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:41 - 
+--- Step 44 ---
+10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:41 - 
+--- Step 45 ---
+10:34:41 - Simulated random decision for 'TransmitPacket' → 1
+10:34:41 - Firing 'TransmitPacket' with binding: {n -> 2, d -> 'OUR'}
+10:34:41 - Saving snapshot to snakes_2_model/img/step_45_TransmitPacket.png
+10:34:42 - 
+--- Step 46 ---
+10:34:42 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:42 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:42 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:42 - 
+--- Step 47 ---
+10:34:42 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
+10:34:42 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:42 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:42 - 
+--- Step 48 ---
+10:34:42 - Firing 'SendPacket' with binding: {n -> 3, d -> 'ED '}
+10:34:42 - Saving snapshot to snakes_2_model/img/step_48_SendPacket.png
+10:34:42 - 
+--- Step 49 ---
+10:34:43 - 'ReceivePacket': n ≠ k (2 ≠ 3) — skipping transition
+10:34:43 - Condition not met for 'ReceivePacket', executing alternative branch.
+10:34:43 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
+10:34:43 - 
+--- Step 50 ---
+10:34:43 - Firing 'SendPacket' with binding: {n -> 3, d -> 'ED '}
+10:34:43 - Saving snapshot to snakes_2_model/img/step_50_SendPacket.png
+10:34:43 - 
+Final state of places:
+10:34:43 - Place: PacketsToSend, Tokens: [(4, 'PET'), (5, 'RI '), (6, 'NET'), (1, 'COL'), (2, 'OUR'), (3, 'ED ')]
+10:34:43 - Place: B, Tokens: [(1, 'COL'), (1, 'COL'), (1, 'COL'), (2, 'OUR'), (2, 'OUR')]
+10:34:43 - Place: DataReceived, Tokens: ['COLOUR']
+10:34:43 - Place: NextSend, Tokens: [3]
+10:34:43 - Place: A, Tokens: [(3, 'ED '), (3, 'ED ')]
+10:34:43 - Place: D, Tokens: []
+10:34:43 - Place: C, Tokens: []
+10:34:43 - Place: NextRec, Tokens: [3]
