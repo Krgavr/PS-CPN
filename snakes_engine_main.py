@@ -21,7 +21,7 @@ def create_colset_functions(colsets):
         elif colset_type == "int":
             colset_functions[colset_name] = lambda x: isinstance(x, int)
         elif colset_type == "enum" and subtype_contents:
-            # If x is a Variable, convert it to a string before comparing it.
+            # Если x — Variable, сначала приводим к строке
             colset_functions[colset_name] = lambda x, values=subtype_contents: (str(x) if isinstance(x, Variable) else x) in values
         elif colset_type == "product" and subtype_contents:
             colset_functions[colset_name] = lambda x, types=subtype_contents: isinstance(x, tuple) and len(x) == len(types)
@@ -33,13 +33,17 @@ def create_colset_functions(colsets):
 
 
 # Function to parse initmark into MultiSet
-def parse_initmark(initmark):
+def parse_initmark(initmark, values_dict=None):
     if not initmark:
         return MultiSet()
-    
+
+    # Подстановка значений из глобального блока (если имеется)
+    if values_dict and initmark in values_dict:
+        initmark = values_dict[initmark]
+
     flattened_tokens = []
     parts = initmark.split("++")
-    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1, “COL ”) or 2`B
+    token_pattern = r"(\d+)`(.+)"  # Например: 1`(1,"COL") или 2`B
 
     for part in parts:
         match = re.match(token_pattern, part.strip())
@@ -47,14 +51,11 @@ def parse_initmark(initmark):
             count = int(match.group(1))
             value = match.group(2).strip()
 
-            # tuple
             if value.startswith("(") and value.endswith(")"):
                 inner = value[1:-1]
                 items = [v.strip() for v in re.split(r",(?![^()]*\))", inner)]
-
                 parsed_items = []
                 for item in items:
-                    # delete the quotation marks, if any.
                     if item.startswith('"') and item.endswith('"'):
                         parsed_items.append(item[1:-1])
                     elif item.isdigit():
@@ -63,7 +64,6 @@ def parse_initmark(initmark):
                         parsed_items.append(item)
                 token = tuple(parsed_items)
             else:
-                # Simple value
                 if value.startswith('"') and value.endswith('"'):
                     token = value[1:-1]
                 elif value.isdigit():
@@ -74,8 +74,6 @@ def parse_initmark(initmark):
             flattened_tokens.extend([token] * count)
 
     return MultiSet(flattened_tokens)
-
-
 
 
 # Function to create variables
@@ -90,8 +88,8 @@ def create_variables(data):
 # Function to convert ML-style conditions into Python
 def convert_condition(condition):
     """
-    Converts ML conditions to Python.
-    Example:
+    Преобразует условия ML в Python.
+    Пример:
         [in1<>in2] -> in1 != in2
     """
     if not condition:
@@ -102,38 +100,83 @@ def convert_condition(condition):
     condition = condition.replace("!==", "!=")
     return condition
 
+
+def convert_ml_if_expression(expr):
+    """
+    Преобразует выражения вида if-then-else из ML в валидный Python.
+    
+    Примеры:
+      'if success then 1`n else empty'
+          →  ( [n]*1 if success else [] )
+      'if n=k then data^d else data'
+          →  (data+d if n==k else data)
+      'if n=k then k+1 else k'
+          →  (k+1 if n==k else k)
+    """
+    expr = expr.replace("^", "+")  # заменяем '^' на '+'
+    if_match = re.match(r"if (.+?) then (.+?) else (.+)", expr)
+    if if_match:
+        condition = if_match.group(1).strip()
+        then_expr = if_match.group(2).strip()
+        else_expr = if_match.group(3).strip()
+        # Преобразуем условие: заменяем одиночное '=' на '=='
+        condition = re.sub(r"(?<![=!])=(?!=)", "==", condition)
+        then = parse_token_expression(then_expr)
+        else_ = "[]" if else_expr == "empty" else parse_token_expression(else_expr)
+        return f"({then} if {condition} else {else_})"
+    return expr
+
+
+def parse_token_expression(expr):
+    """
+    Преобразует выражения вида 1`x или 2`(a,b) в Python: [x]*1 или [(a,b)]*2.
+    Если выражение не соответствует шаблону, заменяет '^' на '+'.
+    """
+    token_pattern = r"(\d+)`(.+)"
+    match = re.match(token_pattern, expr)
+    if match:
+        count = int(match.group(1))
+        value = match.group(2).strip()
+        return f"[{value}]*{count}"
+    return expr.replace("^", "+")
+
+
 # Function to parse arc expressions
 def parse_arc_expression(expression, arc_type):
-    """
-    Converts arc expressions from ML to Variable, Tuple or Expression.
-    Input arcs (PtoT): usually Variables or Tuples.
-    Output arcs (TtoP): same, but allow expressions like n+1.
-    """
     if not expression:
         return None
 
     expression = expression.strip()
 
-    token_pattern = r"(\d+)`(.+)"  # For example: 1`in1, 1`(in1,in2), 1`n+1
+    # Если выражение — if-then-else, просто берём часть then (заглушка)
+    if expression.startswith("if") and "then" in expression and "else" in expression:
+        if_match = re.match(r"if .+? then (.+?) else .+", expression)
+        if if_match:
+            then_expr = if_match.group(1).strip()
+            return parse_arc_expression(then_expr, arc_type)
+
+    if expression == "empty":
+        return MultiSet()
+
+    token_pattern = r"(\d+)`(.+)"
     match = re.match(token_pattern, expression)
     if match:
         count = int(match.group(1))
         value = match.group(2).strip()
     else:
-        value = expression.strip()  
+        value = expression
 
-    # A tuple of the form (in1,in2)
     if value.startswith("(") and value.endswith(")"):
-        inner = value[1:-1]
-        items = [item.strip() for item in inner.split(",")]
+        items = [item.strip() for item in value[1:-1].split(",")]
         variables = [Variable(i) for i in items]
         return Tuple(variables)
 
-    # Expression: n+1, d+2, etc.
+    if "^" in value:
+        return Expression(value.replace("^", "+"))
+
     if re.search(r"[+*/-]", value):
         return Expression(value)
 
-    # Simple variable
     return Variable(value)
 
 
@@ -141,6 +184,7 @@ def parse_arc_expression(expression, arc_type):
 def create_snakes_net(data, colset_functions):
     net = PetriNet("CPN_Model")
     places_info = []
+    values_dict = {val["name"]: val["value"] for val in data.get("values", [])}
     variables = create_variables(data)
 
     for place in data["places"]:
@@ -148,7 +192,7 @@ def create_snakes_net(data, colset_functions):
         place_type = place["type"]
         initmark = place["initmark"]
         is_valid_func = colset_functions.get(place_type, lambda x: True)
-        tokens = parse_initmark(initmark)
+        tokens = parse_initmark(initmark, values_dict)
         net.add_place(Place(place_name, tokens=tokens, check=is_valid_func))
         places_info.append((place_name, tokens, place_type))
 
@@ -171,17 +215,15 @@ def create_snakes_net(data, colset_functions):
         transition_name = next((t["text"] for t in data["transitions"] if t["transition_id"] == transition_id), None)
         if not place_name or not transition_name:
             continue
+
+        arc_label = parse_arc_expression(expression, arc_type)
+
         if arc_type == "PtoT":
-            print(f"Adding input arc: {place_name} -> {transition_name} with expression {expression}")
-            arc_label = parse_arc_expression(expression, arc_type)
-            if isinstance(arc_label, list):
-                for var in arc_label:
-                    net.add_input(place_name, transition_name, var)
-            else:
-                net.add_input(place_name, transition_name, arc_label)
+            net.add_input(place_name, transition_name, arc_label)
         elif arc_type == "TtoP":
-            print(f"Adding output arc: {transition_name} -> {place_name} with expression {expression}")
-            arc_label = parse_arc_expression(expression, arc_type)
+            net.add_output(place_name, transition_name, arc_label)
+        elif arc_type == "BOTHDIR":
+            net.add_input(place_name, transition_name, arc_label)
             net.add_output(place_name, transition_name, arc_label)
 
     return net, places_info, variables
