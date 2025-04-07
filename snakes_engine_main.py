@@ -37,7 +37,7 @@ def parse_initmark(initmark, values_dict=None):
     if not initmark:
         return MultiSet()
 
-    # Подстановка значений из глобального блока (если имеется)
+    # Substitution of values from the global block (if available)
     if values_dict and initmark in values_dict:
         initmark = values_dict[initmark]
 
@@ -88,8 +88,8 @@ def create_variables(data):
 # Function to convert ML-style conditions into Python
 def convert_condition(condition):
     """
-    Преобразует условия ML в Python.
-    Пример:
+    Converts ML conditions to Python.
+    Example:
         [in1<>in2] -> in1 != in2
     """
     if not condition:
@@ -103,15 +103,15 @@ def convert_condition(condition):
 
 def convert_ml_if_expression(expr):
     """
-    Преобразует выражения вида if-then-else из ML в валидный Python.
+    Converts if-then-else expressions from ML to valid Python.
     
-    Примеры:
+    Examples:
       'if success then 1`n else empty'
-          →  ( [n]*1 if success else [] )
+          → ( [n]*1 if success else [] )
       'if n=k then data^d else data'
-          →  (data+d if n==k else data)
+          → (data+d if n==k else data)
       'if n=k then k+1 else k'
-          →  (k+1 if n==k else k)
+          → (k+1 if n==k else k)
     """
     expr = expr.replace("^", "+")  # заменяем '^' на '+'
     if_match = re.match(r"if (.+?) then (.+?) else (.+)", expr)
@@ -129,8 +129,8 @@ def convert_ml_if_expression(expr):
 
 def parse_token_expression(expr):
     """
-    Преобразует выражения вида 1`x или 2`(a,b) в Python: [x]*1 или [(a,b)]*2.
-    Если выражение не соответствует шаблону, заменяет '^' на '+'.
+    Converts expressions of the form 1`x or 2`(a,b) to Python: [x]*1 or [(a,b)]*2.
+    If the expression does not match the pattern, replaces '^' with '+'.
     """
     token_pattern = r"(\d+)`(.+)"
     match = re.match(token_pattern, expr)
@@ -148,7 +148,7 @@ def parse_arc_expression(expression, arc_type):
 
     expression = expression.strip()
 
-    # Если выражение — if-then-else, просто берём часть then (заглушка)
+    # If the expression is if-then-else, just take the then part (stub).
     if expression.startswith("if") and "then" in expression and "else" in expression:
         if_match = re.match(r"if .+? then (.+?) else .+", expression)
         if if_match:
