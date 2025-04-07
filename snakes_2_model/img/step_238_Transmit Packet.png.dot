@@ -1,0 +1,191 @@
+digraph {
+  node [label="N", fillcolor="#FFFFFF", fontcolor="#000000", style=filled];
+  edge [style="solid"];
+  graph [splines="true", overlap="false"];
+  subgraph cluster_1876686622736 {
+    graph [
+      style="invis"
+    ];
+    node_0
+      [
+        shape="ellipse"
+        label="Packets To Send\n{(2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET'), (1, 'COL')}"
+        tooltip="Packets To Send"
+        id="node_0"
+      ];
+    node_1
+      [
+        shape="ellipse"
+        label="B\n{(1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL'), (1, 'COL')}"
+        tooltip="B"
+        id="node_1"
+      ];
+    node_10
+      [
+        shape="rectangle"
+        label="Receive Packet\nTrue"
+        tooltip="Receive Packet"
+        id="node_10"
+      ];
+    node_11
+      [
+        shape="rectangle"
+        label="Transmit Ack\nTrue"
+        tooltip="Transmit Ack"
+        id="node_11"
+      ];
+    node_12
+      [
+        shape="rectangle"
+        label="Receive Ack\nTrue"
+        tooltip="Receive Ack"
+        id="node_12"
+      ];
+    node_2
+      [
+        shape="ellipse"
+        label="Data Received\n{'COL'}"
+        tooltip="Data Received"
+        id="node_2"
+      ];
+    node_3
+      [
+        shape="ellipse"
+        label="NextSend\n{1}"
+        tooltip="NextSend"
+        id="node_3"
+      ];
+    node_4
+      [
+        shape="ellipse"
+        label="A\n{(1, 'COL'), (1, 'COL')}"
+        tooltip="A"
+        id="node_4"
+      ];
+    node_5
+      [
+        shape="ellipse"
+        label="D\n{2}"
+        tooltip="D"
+        id="node_5"
+      ];
+    node_6
+      [
+        shape="ellipse"
+        label="C\n{}"
+        tooltip="C"
+        id="node_6"
+      ];
+    node_7
+      [
+        shape="ellipse"
+        label="NextRec\n{2}"
+        tooltip="NextRec"
+        id="node_7"
+      ];
+    node_8
+      [
+        shape="rectangle"
+        label="Send Packet\nTrue"
+        tooltip="Send Packet"
+        id="node_8"
+      ];
+    node_9
+      [
+        shape="rectangle"
+        label="Transmit Packet\nTrue"
+        tooltip="Transmit Packet"
+        id="node_9"
+      ];
+    node_0 -> node_8
+      [
+        arrowhead="normal"
+        label=" (n, d) "
+      ];
+    node_3 -> node_8
+      [
+        arrowhead="normal"
+        label=" n "
+      ];
+    node_8 -> node_0
+      [
+        arrowhead="normal"
+        label=" (n, d) "
+      ];
+    node_8 -> node_3
+      [
+        arrowhead="normal"
+        label=" n "
+      ];
+    node_8 -> node_4
+      [
+        arrowhead="normal"
+        label=" (n, d) "
+      ];
+    node_4 -> node_9
+      [
+        arrowhead="normal"
+        label=" (n, d) "
+      ];
+    node_9 -> node_1
+      [
+        arrowhead="normal"
+        label=" (n, d) "
+      ];
+    node_1 -> node_10
+      [
+        arrowhead="normal"
+        label=" (n, d) "
+      ];
+    node_2 -> node_10
+      [
+        arrowhead="normal"
+        label=" data "
+      ];
+    node_7 -> node_10
+      [
+        arrowhead="normal"
+        label=" k "
+      ];
+    node_10 -> node_2
+      [
+        arrowhead="normal"
+        label=" data+d "
+      ];
+    node_10 -> node_6
+      [
+        arrowhead="normal"
+        label=" k+1 "
+      ];
+    node_10 -> node_7
+      [
+        arrowhead="normal"
+        label=" k+1 "
+      ];
+    node_6 -> node_11
+      [
+        arrowhead="normal"
+        label=" n "
+      ];
+    node_11 -> node_5
+      [
+        arrowhead="normal"
+        label=" n "
+      ];
+    node_5 -> node_12
+      [
+        arrowhead="normal"
+        label=" n "
+      ];
+    node_3 -> node_12
+      [
+        arrowhead="normal"
+        label=" k "
+      ];
+    node_12 -> node_3
+      [
+        arrowhead="normal"
+        label=" n "
+      ];
+  }
+}

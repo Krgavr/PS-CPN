@@ -1,310 +1,878 @@
-10:34:32 - Loading and parsing model...
-10:34:32 - Declarations and data successfully loaded.
-10:34:32 - 
+15:47:33 - Loading and parsing model...
+15:47:33 - Declarations and data successfully loaded.
+15:47:33 - 
 Petri Net Description:
-10:34:32 - CPN_Model
-10:34:32 - 
+15:47:33 - CPN_Model
+15:47:33 - 
 Places and their tokens:
-10:34:32 - Place: PacketsToSend, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], CheckType: NOxDATA
-10:34:32 - Place: B, Tokens: [], CheckType: NOxDATA
-10:34:32 - Place: DataReceived, Tokens: [''], CheckType: DATA
-10:34:32 - Place: NextSend, Tokens: [1], CheckType: NO
-10:34:32 - Place: A, Tokens: [], CheckType: NOxDATA
-10:34:32 - Place: D, Tokens: [], CheckType: NO
-10:34:32 - Place: C, Tokens: [], CheckType: NO
-10:34:32 - Place: NextRec, Tokens: [1], CheckType: NO
-10:34:32 - 
+15:47:33 - Place: Packets To Send, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], CheckType: NOxDATA
+15:47:33 - Place: B, Tokens: [], CheckType: NOxDATA
+15:47:33 - Place: Data Received, Tokens: [''], CheckType: DATA
+15:47:33 - Place: NextSend, Tokens: [1], CheckType: NO
+15:47:33 - Place: A, Tokens: [], CheckType: NOxDATA
+15:47:33 - Place: D, Tokens: [], CheckType: NO
+15:47:33 - Place: C, Tokens: [], CheckType: NO
+15:47:33 - Place: NextRec, Tokens: [1], CheckType: NO
+15:47:33 - 
 Variables:
-10:34:32 - Variable: n, Type: NO
-10:34:32 - Variable: k, Type: NO
-10:34:32 - Variable: d, Type: DATA
-10:34:32 - Variable: data, Type: DATA
-10:34:32 - Variable: success, Type: BOOL
-10:34:32 - 
+15:47:33 - Variable: n, Type: NO
+15:47:33 - Variable: k, Type: NO
+15:47:33 - Variable: d, Type: DATA
+15:47:33 - Variable: data, Type: DATA
+15:47:33 - Variable: success, Type: BOOL
+15:47:34 - 
 === Full Petri Net Description ===
-10:34:32 - 
+15:47:34 - 
 Places:
-10:34:32 - Place: PacketsToSend, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], Check: check
-10:34:32 - Place: B, Tokens: [], Check: check
-10:34:32 - Place: DataReceived, Tokens: [''], Check: check
-10:34:32 - Place: NextSend, Tokens: [1], Check: check
-10:34:32 - Place: A, Tokens: [], Check: check
-10:34:32 - Place: D, Tokens: [], Check: check
-10:34:32 - Place: C, Tokens: [], Check: check
-10:34:32 - Place: NextRec, Tokens: [1], Check: check
-10:34:32 - 
+15:47:34 - Place: Packets To Send, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], Check: check
+15:47:34 - Place: B, Tokens: [], Check: check
+15:47:34 - Place: Data Received, Tokens: [''], Check: check
+15:47:34 - Place: NextSend, Tokens: [1], Check: check
+15:47:34 - Place: A, Tokens: [], Check: check
+15:47:34 - Place: D, Tokens: [], Check: check
+15:47:34 - Place: C, Tokens: [], Check: check
+15:47:34 - Place: NextRec, Tokens: [1], Check: check
+15:47:34 - 
 Transitions:
-10:34:32 - Transition: SendPacket, Guard: True
-10:34:32 - Transition: TransmitPacket, Guard: True
-10:34:32 - Transition: ReceivePacket, Guard: True
-10:34:32 - Transition: TransmitAck, Guard: True
-10:34:32 - Transition: ReceiveAck, Guard: True
-10:34:32 - 
+15:47:34 - Transition: Send Packet, Guard: True
+15:47:34 - Transition: Transmit Packet, Guard: True
+15:47:34 - Transition: Receive Packet, Guard: True
+15:47:34 - Transition: Transmit Ack, Guard: True
+15:47:34 - Transition: Receive Ack, Guard: True
+15:47:34 - 
 Arcs:
-10:34:32 - Input Arc: PacketsToSend -> SendPacket, Label: (n, d)
-10:34:32 - Input Arc: NextSend -> SendPacket, Label: n
-10:34:32 - Output Arc: SendPacket -> PacketsToSend, Label: (n, d)
-10:34:32 - Output Arc: SendPacket -> NextSend, Label: n
-10:34:32 - Output Arc: SendPacket -> A, Label: (n, d)
-10:34:32 - Input Arc: A -> TransmitPacket, Label: (n, d)
-10:34:32 - Output Arc: TransmitPacket -> B, Label: (n, d)
-10:34:32 - Input Arc: B -> ReceivePacket, Label: (n, d)
-10:34:32 - Input Arc: DataReceived -> ReceivePacket, Label: data
-10:34:32 - Input Arc: NextRec -> ReceivePacket, Label: k
-10:34:32 - Output Arc: ReceivePacket -> DataReceived, Label: data+d
-10:34:32 - Output Arc: ReceivePacket -> C, Label: k+1
-10:34:32 - Output Arc: ReceivePacket -> NextRec, Label: k+1
-10:34:32 - Input Arc: C -> TransmitAck, Label: n
-10:34:32 - Output Arc: TransmitAck -> D, Label: n
-10:34:32 - Input Arc: D -> ReceiveAck, Label: n
-10:34:32 - Input Arc: NextSend -> ReceiveAck, Label: k
-10:34:32 - Output Arc: ReceiveAck -> NextSend, Label: n
-10:34:32 - 
+15:47:34 - Input Arc: Packets To Send -> Send Packet, Label: (n, d)
+15:47:34 - Input Arc: NextSend -> Send Packet, Label: n
+15:47:34 - Output Arc: Send Packet -> Packets To Send, Label: (n, d)
+15:47:34 - Output Arc: Send Packet -> NextSend, Label: n
+15:47:34 - Output Arc: Send Packet -> A, Label: (n, d)
+15:47:34 - Input Arc: A -> Transmit Packet, Label: (n, d)
+15:47:34 - Output Arc: Transmit Packet -> B, Label: (n, d)
+15:47:34 - Input Arc: B -> Receive Packet, Label: (n, d)
+15:47:34 - Input Arc: Data Received -> Receive Packet, Label: data
+15:47:34 - Input Arc: NextRec -> Receive Packet, Label: k
+15:47:34 - Output Arc: Receive Packet -> Data Received, Label: data+d
+15:47:34 - Output Arc: Receive Packet -> C, Label: k+1
+15:47:34 - Output Arc: Receive Packet -> NextRec, Label: k+1
+15:47:34 - Input Arc: C -> Transmit Ack, Label: n
+15:47:34 - Output Arc: Transmit Ack -> D, Label: n
+15:47:34 - Input Arc: D -> Receive Ack, Label: n
+15:47:34 - Input Arc: NextSend -> Receive Ack, Label: k
+15:47:34 - Output Arc: Receive Ack -> NextSend, Label: n
+15:47:34 - 
 Starting simulation loop...
-10:34:32 - 
+15:47:34 - 
 --- Step 1 ---
-10:34:32 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:32 - Saving snapshot to snakes_2_model/img/step_1_SendPacket.png
-10:34:33 - 
+15:47:34 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:34 - Saving snapshot to snakes_2_model/img/step_1_Send Packet.png
+15:47:34 - 
 --- Step 2 ---
-10:34:33 - Simulated random decision for 'TransmitPacket' → 0
-10:34:33 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:33 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:33 - 
+15:47:34 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:34 - Saving snapshot to snakes_2_model/img/step_2_Transmit Packet.png
+15:47:35 - 
 --- Step 3 ---
-10:34:33 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:33 - Saving snapshot to snakes_2_model/img/step_3_SendPacket.png
-10:34:33 - 
+15:47:35 - Firing 'Receive Packet' with binding: {n -> 1, d -> 'COL', data -> '', k -> 1}
+15:47:35 - Saving snapshot to snakes_2_model/img/step_3_Receive Packet.png
+15:47:35 - 
 --- Step 4 ---
-10:34:33 - Simulated random decision for 'TransmitPacket' → 0
-10:34:33 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:33 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:33 - 
+15:47:35 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:35 - Saving snapshot to snakes_2_model/img/step_4_Send Packet.png
+15:47:36 - 
 --- Step 5 ---
-10:34:33 - Simulated random decision for 'TransmitPacket' → 0
-10:34:33 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:33 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:33 - 
+15:47:36 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:36 - Saving snapshot to snakes_2_model/img/step_5_Transmit Packet.png
+15:47:36 - 
 --- Step 6 ---
-10:34:33 - Simulated random decision for 'TransmitPacket' → 1
-10:34:33 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:33 - Saving snapshot to snakes_2_model/img/step_6_TransmitPacket.png
-10:34:34 - 
+15:47:36 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:36 - Saving snapshot to snakes_2_model/img/step_6_Send Packet.png
+15:47:37 - 
 --- Step 7 ---
-10:34:34 - Firing 'ReceivePacket' with binding: {n -> 1, d -> 'COL', data -> '', k -> 1}
-10:34:34 - Saving snapshot to snakes_2_model/img/step_7_ReceivePacket.png
-10:34:34 - 
+15:47:37 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:37 - Saving snapshot to snakes_2_model/img/step_7_Send Packet.png
+15:47:37 - 
 --- Step 8 ---
-10:34:34 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:34 - Saving snapshot to snakes_2_model/img/step_8_SendPacket.png
-10:34:35 - 
+15:47:37 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:37 - Saving snapshot to snakes_2_model/img/step_8_Transmit Packet.png
+15:47:38 - 
 --- Step 9 ---
-10:34:35 - Simulated random decision for 'TransmitPacket' → 1
-10:34:35 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:35 - Saving snapshot to snakes_2_model/img/step_9_TransmitPacket.png
-10:34:35 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 10 ---
-10:34:35 - Firing 'SendPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:35 - Saving snapshot to snakes_2_model/img/step_10_SendPacket.png
-10:34:36 - 
+15:47:38 - Firing 'Transmit Ack' with binding: {n -> 2}
+15:47:38 - Saving snapshot to snakes_2_model/img/step_10_Transmit Ack.png
+15:47:38 - 
 --- Step 11 ---
-10:34:36 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:36 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:36 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:36 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 12 ---
-10:34:36 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:36 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:36 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:36 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 13 ---
-10:34:36 - Simulated random decision for 'TransmitPacket' → 1
-10:34:36 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:36 - Saving snapshot to snakes_2_model/img/step_13_TransmitPacket.png
-10:34:36 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 14 ---
-10:34:36 - Firing 'TransmitAck' with binding: {n -> 2}
-10:34:36 - Saving snapshot to snakes_2_model/img/step_14_TransmitAck.png
-10:34:37 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 15 ---
-10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:37 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 16 ---
-10:34:37 - Simulated random success for 'ReceiveAck' → 1
-10:34:37 - Firing 'ReceiveAck' with binding: {n -> 2, k -> 1}
-10:34:37 - Saving snapshot to snakes_2_model/img/step_16_ReceiveAck.png
-10:34:37 - 
+15:47:38 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:38 - Saving snapshot to snakes_2_model/img/step_16_Transmit Packet.png
+15:47:38 - 
 --- Step 17 ---
-10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:37 - 
+15:47:38 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:38 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 18 ---
-10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:37 - 
+15:47:38 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:38 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:38 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:38 - 
 --- Step 19 ---
-10:34:37 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:37 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:37 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:37 - 
+15:47:38 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:38 - Saving snapshot to snakes_2_model/img/step_19_Send Packet.png
+15:47:39 - 
 --- Step 20 ---
-10:34:37 - Simulated random decision for 'TransmitPacket' → 0
-10:34:37 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:37 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:37 - 
+15:47:39 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:39 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:39 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:39 - 
 --- Step 21 ---
-10:34:37 - Simulated random decision for 'TransmitPacket' → 0
-10:34:37 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:37 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:37 - 
+15:47:39 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:39 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:39 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:39 - 
 --- Step 22 ---
-10:34:37 - Firing 'SendPacket' with binding: {n -> 2, d -> 'OUR'}
-10:34:37 - Saving snapshot to snakes_2_model/img/step_22_SendPacket.png
-10:34:38 - 
+15:47:39 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:39 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:39 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:39 - 
 --- Step 23 ---
-10:34:38 - Simulated random decision for 'TransmitPacket' → 1
-10:34:38 - Firing 'TransmitPacket' with binding: {n -> 1, d -> 'COL'}
-10:34:38 - Saving snapshot to snakes_2_model/img/step_23_TransmitPacket.png
-10:34:38 - 
+15:47:39 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:39 - Saving snapshot to snakes_2_model/img/step_23_Transmit Packet.png
+15:47:39 - 
 --- Step 24 ---
-10:34:38 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:38 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:38 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:38 - 
+15:47:39 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:39 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:39 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:39 - 
 --- Step 25 ---
-10:34:38 - Simulated random decision for 'TransmitPacket' → 0
-10:34:38 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:38 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:38 - 
+15:47:39 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:39 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:39 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:39 - 
 --- Step 26 ---
-10:34:38 - Simulated random decision for 'TransmitPacket' → 0
-10:34:38 - Condition not met for 'TransmitPacket', executing alternative branch.
-10:34:38 - Alternative action for 'TransmitPacket': token returns to its original place (simulated).
-10:34:38 - 
+15:47:39 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:39 - Saving snapshot to snakes_2_model/img/step_26_Send Packet.png
+15:47:40 - 
 --- Step 27 ---
-10:34:38 - Simulated random decision for 'TransmitPacket' → 1
-10:34:38 - Firing 'TransmitPacket' with binding: {n -> 2, d -> 'OUR'}
-10:34:38 - Saving snapshot to snakes_2_model/img/step_27_TransmitPacket.png
-10:34:39 - 
+15:47:40 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:40 - Saving snapshot to snakes_2_model/img/step_27_Transmit Packet.png
+15:47:40 - 
 --- Step 28 ---
-10:34:39 - 'ReceivePacket': n ≠ k (1 ≠ 2) — skipping transition
-10:34:39 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:39 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:39 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 29 ---
-10:34:39 - Firing 'ReceivePacket' with binding: {n -> 2, d -> 'OUR', data -> 'COL', k -> 2}
-10:34:39 - Saving snapshot to snakes_2_model/img/step_29_ReceivePacket.png
-10:34:39 - 
+15:47:40 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:40 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 30 ---
-10:34:39 - Firing 'TransmitAck' with binding: {n -> 3}
-10:34:39 - Saving snapshot to snakes_2_model/img/step_30_TransmitAck.png
-10:34:40 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 31 ---
-10:34:40 - Firing 'SendPacket' with binding: {n -> 2, d -> 'OUR'}
-10:34:40 - Saving snapshot to snakes_2_model/img/step_31_SendPacket.png
-10:34:40 - 
+15:47:40 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:40 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 32 ---
-10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:40 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 33 ---
-10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:40 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 34 ---
-10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:40 - 
+15:47:40 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:40 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 35 ---
-10:34:40 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:40 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:40 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:40 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 36 ---
-10:34:40 - Firing 'SendPacket' with binding: {n -> 2, d -> 'OUR'}
-10:34:40 - Saving snapshot to snakes_2_model/img/step_36_SendPacket.png
-10:34:41 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 37 ---
-10:34:41 - Simulated random decision for 'TransmitPacket' → 1
-10:34:41 - Firing 'TransmitPacket' with binding: {n -> 2, d -> 'OUR'}
-10:34:41 - Saving snapshot to snakes_2_model/img/step_37_TransmitPacket.png
-10:34:41 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 38 ---
-10:34:41 - Simulated random success for 'ReceiveAck' → 0
-10:34:41 - Condition not met for 'ReceiveAck', executing alternative branch.
-10:34:41 - Alternative action for 'ReceiveAck': token returns to its original place (simulated).
-10:34:41 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 39 ---
-10:34:41 - Simulated random success for 'ReceiveAck' → 1
-10:34:41 - Firing 'ReceiveAck' with binding: {n -> 3, k -> 2}
-10:34:41 - Saving snapshot to snakes_2_model/img/step_39_ReceiveAck.png
-10:34:41 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 40 ---
-10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:41 - 
+15:47:40 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:40 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:40 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:40 - 
 --- Step 41 ---
-10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:41 - 
+15:47:40 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:40 - Saving snapshot to snakes_2_model/img/step_41_Send Packet.png
+15:47:41 - 
 --- Step 42 ---
-10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:41 - 
+15:47:41 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:41 - Saving snapshot to snakes_2_model/img/step_42_Send Packet.png
+15:47:41 - 
 --- Step 43 ---
-10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:41 - 
+15:47:41 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:41 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:41 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:41 - 
 --- Step 44 ---
-10:34:41 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:41 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:41 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:41 - 
+15:47:41 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:41 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:41 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:41 - 
 --- Step 45 ---
-10:34:41 - Simulated random decision for 'TransmitPacket' → 1
-10:34:41 - Firing 'TransmitPacket' with binding: {n -> 2, d -> 'OUR'}
-10:34:41 - Saving snapshot to snakes_2_model/img/step_45_TransmitPacket.png
-10:34:42 - 
+15:47:41 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:41 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:41 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:41 - 
 --- Step 46 ---
-10:34:42 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:42 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:42 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:42 - 
+15:47:41 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:41 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:41 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:41 - 
 --- Step 47 ---
-10:34:42 - 'ReceivePacket': n ≠ k (1 ≠ 3) — skipping transition
-10:34:42 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:42 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:42 - 
+15:47:41 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:41 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:41 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:41 - 
 --- Step 48 ---
-10:34:42 - Firing 'SendPacket' with binding: {n -> 3, d -> 'ED '}
-10:34:42 - Saving snapshot to snakes_2_model/img/step_48_SendPacket.png
-10:34:42 - 
+15:47:41 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:41 - Saving snapshot to snakes_2_model/img/step_48_Transmit Packet.png
+15:47:42 - 
 --- Step 49 ---
-10:34:43 - 'ReceivePacket': n ≠ k (2 ≠ 3) — skipping transition
-10:34:43 - Condition not met for 'ReceivePacket', executing alternative branch.
-10:34:43 - Alternative action for 'ReceivePacket': token returns to its original place (simulated).
-10:34:43 - 
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
 --- Step 50 ---
-10:34:43 - Firing 'SendPacket' with binding: {n -> 3, d -> 'ED '}
-10:34:43 - Saving snapshot to snakes_2_model/img/step_50_SendPacket.png
-10:34:43 - 
-Final state of places:
-10:34:43 - Place: PacketsToSend, Tokens: [(4, 'PET'), (5, 'RI '), (6, 'NET'), (1, 'COL'), (2, 'OUR'), (3, 'ED ')]
-10:34:43 - Place: B, Tokens: [(1, 'COL'), (1, 'COL'), (1, 'COL'), (2, 'OUR'), (2, 'OUR')]
-10:34:43 - Place: DataReceived, Tokens: ['COLOUR']
-10:34:43 - Place: NextSend, Tokens: [3]
-10:34:43 - Place: A, Tokens: [(3, 'ED '), (3, 'ED ')]
-10:34:43 - Place: D, Tokens: []
-10:34:43 - Place: C, Tokens: []
-10:34:43 - Place: NextRec, Tokens: [3]
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 51 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 52 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 53 ---
+15:47:42 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:42 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 54 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 55 ---
+15:47:42 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:42 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 56 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 57 ---
+15:47:42 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:42 - Saving snapshot to snakes_2_model/img/step_57_Transmit Packet.png
+15:47:42 - 
+--- Step 58 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 59 ---
+15:47:42 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:42 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 60 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 61 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 62 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 63 ---
+15:47:42 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:42 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:42 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:42 - 
+--- Step 64 ---
+15:47:42 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:42 - Saving snapshot to snakes_2_model/img/step_64_Send Packet.png
+15:47:43 - 
+--- Step 65 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 66 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 67 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 68 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 69 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 70 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 71 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 72 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 73 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 74 ---
+15:47:43 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:43 - Saving snapshot to snakes_2_model/img/step_74_Send Packet.png
+15:47:43 - 
+--- Step 75 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 76 ---
+15:47:43 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:43 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:43 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:43 - 
+--- Step 77 ---
+15:47:43 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:43 - Saving snapshot to snakes_2_model/img/step_77_Transmit Packet.png
+15:47:44 - 
+--- Step 78 ---
+15:47:44 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:44 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:44 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:44 - 
+--- Step 79 ---
+15:47:44 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:44 - Saving snapshot to snakes_2_model/img/step_79_Send Packet.png
+15:47:44 - 
+--- Step 80 ---
+15:47:44 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:44 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:44 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:44 - 
+--- Step 81 ---
+15:47:44 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:44 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:44 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:44 - 
+--- Step 82 ---
+15:47:44 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:44 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:44 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:44 - 
+--- Step 83 ---
+15:47:44 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:44 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:44 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:44 - 
+--- Step 84 ---
+15:47:44 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:44 - Saving snapshot to snakes_2_model/img/step_84_Send Packet.png
+15:47:45 - 
+--- Step 85 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 86 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 87 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 88 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 89 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 90 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 91 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 92 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 93 ---
+15:47:45 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:45 - Saving snapshot to snakes_2_model/img/step_93_Transmit Packet.png
+15:47:45 - 
+--- Step 94 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 95 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 96 ---
+15:47:45 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:45 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:45 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:45 - 
+--- Step 97 ---
+15:47:45 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:45 - Saving snapshot to snakes_2_model/img/step_97_Transmit Packet.png
+15:47:46 - 
+--- Step 98 ---
+15:47:46 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:46 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:46 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:46 - 
+--- Step 99 ---
+15:47:46 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:46 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:46 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:46 - 
+--- Step 100 ---
+15:47:46 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:46 - Saving snapshot to snakes_2_model/img/step_100_Send Packet.png
+15:47:46 - 
+--- Step 101 ---
+15:47:46 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:46 - Saving snapshot to snakes_2_model/img/step_101_Transmit Packet.png
+15:47:47 - 
+--- Step 102 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 103 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 104 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 105 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 106 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 107 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 108 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 109 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 110 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 111 ---
+15:47:47 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:47 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 112 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 113 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 114 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 115 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 116 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 117 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 118 ---
+15:47:47 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:47 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:47 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:47 - 
+--- Step 119 ---
+15:47:47 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:47 - Saving snapshot to snakes_2_model/img/step_119_Transmit Packet.png
+15:47:48 - 
+--- Step 120 ---
+15:47:48 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:48 - Saving snapshot to snakes_2_model/img/step_120_Send Packet.png
+15:47:48 - 
+--- Step 121 ---
+15:47:48 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:48 - Saving snapshot to snakes_2_model/img/step_121_Send Packet.png
+15:47:49 - 
+--- Step 122 ---
+15:47:49 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:49 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 123 ---
+15:47:49 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:49 - Saving snapshot to snakes_2_model/img/step_123_Transmit Packet.png
+15:47:49 - 
+--- Step 124 ---
+15:47:49 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:49 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 125 ---
+15:47:49 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:49 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 126 ---
+15:47:49 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:49 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 127 ---
+15:47:49 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:49 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 128 ---
+15:47:49 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:49 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 129 ---
+15:47:49 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:49 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:49 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:49 - 
+--- Step 130 ---
+15:47:49 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:49 - Saving snapshot to snakes_2_model/img/step_130_Send Packet.png
+15:47:50 - 
+--- Step 131 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 132 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 133 ---
+15:47:50 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:50 - Saving snapshot to snakes_2_model/img/step_133_Transmit Packet.png
+15:47:50 - 
+--- Step 134 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 135 ---
+15:47:50 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:50 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 136 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 137 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 138 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 139 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 140 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 141 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 142 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 143 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 144 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 145 ---
+15:47:50 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:50 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 146 ---
+15:47:50 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:50 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:50 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:50 - 
+--- Step 147 ---
+15:47:50 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:50 - Saving snapshot to snakes_2_model/img/step_147_Transmit Packet.png
+15:47:51 - 
+--- Step 148 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 149 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 150 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 151 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 152 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 153 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 154 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 155 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 156 ---
+15:47:51 - 'Receive Ack': n ≠ k (2 ≠ 1) — skipping transition
+15:47:51 - Condition not met for 'Receive Ack', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 157 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 158 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 159 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 160 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 161 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 162 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 163 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 164 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 165 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 166 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 167 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 168 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 169 ---
+15:47:51 - 'Receive Packet': n ≠ k (1 ≠ 2) — skipping transition
+15:47:51 - Condition not met for 'Receive Packet', executing alternative branch.
+15:47:51 - Alternative action for 'Receive Packet': token returns to its original place (simulated).
+15:47:51 - 
+--- Step 170 ---
+15:47:51 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+15:47:51 - Saving snapshot to snakes_2_model/img/step_170_Send Packet.png
