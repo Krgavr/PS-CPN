@@ -43,7 +43,7 @@ def parse_initmark(initmark, values_dict=None):
 
     flattened_tokens = []
     parts = initmark.split("++")
-    token_pattern = r"(\d+)`(.+)"  # Например: 1`(1,"COL") или 2`B
+    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1, “COL”) or 2`B
 
     for part in parts:
         match = re.match(token_pattern, part.strip())
@@ -113,13 +113,13 @@ def convert_ml_if_expression(expr):
       'if n=k then k+1 else k'
           → (k+1 if n==k else k)
     """
-    expr = expr.replace("^", "+")  # заменяем '^' на '+'
+    expr = expr.replace("^", "+")  # replace '^' with '+'.
     if_match = re.match(r"if (.+?) then (.+?) else (.+)", expr)
     if if_match:
         condition = if_match.group(1).strip()
         then_expr = if_match.group(2).strip()
         else_expr = if_match.group(3).strip()
-        # Преобразуем условие: заменяем одиночное '=' на '=='
+        # Convert the condition: replace the single '=' with '=='
         condition = re.sub(r"(?<![=!])=(?!=)", "==", condition)
         then = parse_token_expression(then_expr)
         else_ = "[]" if else_expr == "empty" else parse_token_expression(else_expr)
