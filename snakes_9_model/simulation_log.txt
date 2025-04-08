@@ -1,0 +1,78 @@
+2025-04-08 09:46:12 - Declarations and data successfully loaded.
+2025-04-08 09:46:12 - 
+Petri Net Description:
+2025-04-08 09:46:12 - CPN_Model
+2025-04-08 09:46:12 - 
+Places and their tokens:
+2025-04-08 09:46:12 - Place: Buffer, Tokens: [], CheckType: PRODUCT
+2025-04-08 09:46:12 - Place: TotalPrice, Tokens: [0], CheckType: INTsum
+2025-04-08 09:46:12 - Place: Cheap, Tokens: [], CheckType: PRODUCT
+2025-04-08 09:46:12 - Place: Expensive, Tokens: [], CheckType: PRODUCT
+2025-04-08 09:46:12 - Place: None, Tokens: [], CheckType: UNIT
+2025-04-08 09:46:12 - Place: Input, Tokens: [frozenset({('name', 'Bread'), ('id', 1), ('price', 15)}), frozenset({('id', 2), ('name', 'Milk'), ('price', 20)}), frozenset({('id', 3), ('price', 45), ('name', 'Cheese')}), frozenset({('id', 4), ('name', 'Juic'), ('price', 30)}), frozenset({('name', 'Butter'), ('id', 5), ('price', 25)}), frozenset({('price', 10), ('name', 'Eggs'), ('id', 6)})], CheckType: PRODUCT
+2025-04-08 09:46:12 - 
+Variables:
+2025-04-08 09:46:12 - Variable: p, Type: PRODUCT
+2025-04-08 09:46:12 - Variable: total, Type: INTsum
+2025-04-08 09:46:12 - Variable: names, Type: ProductNameList
+2025-04-08 09:46:12 - 
+=== Full Petri Net Description ===
+2025-04-08 09:46:12 - 
+Places:
+2025-04-08 09:46:12 - Place: Buffer, Tokens: [], Check: check
+2025-04-08 09:46:12 - Place: TotalPrice, Tokens: [0], Check: check
+2025-04-08 09:46:12 - Place: Cheap, Tokens: [], Check: check
+2025-04-08 09:46:12 - Place: Expensive, Tokens: [], Check: check
+2025-04-08 09:46:12 - Place: None, Tokens: [], Check: check
+2025-04-08 09:46:12 - Place: Input, Tokens: [frozenset({('name', 'Bread'), ('id', 1), ('price', 15)}), frozenset({('id', 2), ('name', 'Milk'), ('price', 20)}), frozenset({('id', 3), ('price', 45), ('name', 'Cheese')}), frozenset({('id', 4), ('name', 'Juic'), ('price', 30)}), frozenset({('name', 'Butter'), ('id', 5), ('price', 25)}), frozenset({('price', 10), ('name', 'Eggs'), ('id', 6)})], Check: check
+2025-04-08 09:46:12 - 
+Transitions:
+2025-04-08 09:46:12 - Transition: Process, Guard: True
+2025-04-08 09:46:12 - Transition: ClassifyExpensive, Guard: dict(p)['price'] > 20
+2025-04-08 09:46:12 - Transition: ClassifyCheap, Guard: dict(p)['price'] <= 20
+2025-04-08 09:46:12 - 
+Arcs:
+2025-04-08 09:46:12 - Input Arc: Input -> Process, Label: p
+2025-04-08 09:46:12 - Output Arc: Process -> Buffer, Label: p
+2025-04-08 09:46:12 - Input Arc: Buffer -> ClassifyExpensive, Label: p
+2025-04-08 09:46:12 - Input Arc: TotalPrice -> ClassifyExpensive, Label: total
+2025-04-08 09:46:12 - Output Arc: ClassifyExpensive -> Expensive, Label: p
+2025-04-08 09:46:12 - Output Arc: ClassifyExpensive -> TotalPrice, Label: total + dict(p)['price']
+2025-04-08 09:46:12 - Input Arc: Buffer -> ClassifyCheap, Label: p
+2025-04-08 09:46:12 - Input Arc: TotalPrice -> ClassifyCheap, Label: total
+2025-04-08 09:46:12 - Output Arc: ClassifyCheap -> Cheap, Label: p
+2025-04-08 09:46:12 - Output Arc: ClassifyCheap -> TotalPrice, Label: total + dict(p)['price']
+2025-04-08 09:46:17 - Selected simulation mode: Manual
+2025-04-08 09:46:17 - 
+Starting simulation loop...
+2025-04-08 09:46:17 - 
+--- Step 1 ---
+2025-04-08 09:46:17 - Available transitions:
+2025-04-08 09:46:17 - 0: Process with binding {p -> frozenset({('name', 'Bread'), ('id', 1), ('price', 15)})}
+2025-04-08 09:46:17 - 1: Process with binding {p -> frozenset({('id', 2), ('name', 'Milk'), ('price', 20)})}
+2025-04-08 09:46:17 - 2: Process with binding {p -> frozenset({('id', 3), ('price', 45), ('name', 'Cheese')})}
+2025-04-08 09:46:17 - 3: Process with binding {p -> frozenset({('id', 4), ('name', 'Juic'), ('price', 30)})}
+2025-04-08 09:46:17 - 4: Process with binding {p -> frozenset({('name', 'Butter'), ('id', 5), ('price', 25)})}
+2025-04-08 09:46:17 - 5: Process with binding {p -> frozenset({('price', 10), ('name', 'Eggs'), ('id', 6)})}
+2025-04-08 09:46:20 - Selected transition 'Process' with binding: {p -> frozenset({('price', 10), ('name', 'Eggs'), ('id', 6)})}
+2025-04-08 09:46:20 - Saving snapshot to snakes_9_model/img/step_1_Process.png
+2025-04-08 09:46:20 - 
+--- Step 2 ---
+2025-04-08 09:46:20 - Available transitions:
+2025-04-08 09:46:20 - 0: Process with binding {p -> frozenset({('name', 'Bread'), ('id', 1), ('price', 15)})}
+2025-04-08 09:46:20 - 1: Process with binding {p -> frozenset({('id', 2), ('name', 'Milk'), ('price', 20)})}
+2025-04-08 09:46:20 - 2: Process with binding {p -> frozenset({('id', 3), ('price', 45), ('name', 'Cheese')})}
+2025-04-08 09:46:20 - 3: Process with binding {p -> frozenset({('id', 4), ('name', 'Juic'), ('price', 30)})}
+2025-04-08 09:46:20 - 4: Process with binding {p -> frozenset({('name', 'Butter'), ('id', 5), ('price', 25)})}
+2025-04-08 09:46:20 - 5: ClassifyCheap with binding {p -> frozenset({('price', 10), ('name', 'Eggs'), ('id', 6)}), total -> 0}
+2025-04-08 09:46:22 - Selected transition 'Process' with binding: {p -> frozenset({('id', 3), ('price', 45), ('name', 'Cheese')})}
+2025-04-08 09:46:22 - Saving snapshot to snakes_9_model/img/step_2_Process.png
+2025-04-08 09:46:23 - 
+--- Step 3 ---
+2025-04-08 09:46:23 - Available transitions:
+2025-04-08 09:46:23 - 0: Process with binding {p -> frozenset({('name', 'Bread'), ('id', 1), ('price', 15)})}
+2025-04-08 09:46:23 - 1: Process with binding {p -> frozenset({('id', 2), ('name', 'Milk'), ('price', 20)})}
+2025-04-08 09:46:23 - 2: Process with binding {p -> frozenset({('id', 4), ('name', 'Juic'), ('price', 30)})}
+2025-04-08 09:46:23 - 3: Process with binding {p -> frozenset({('name', 'Butter'), ('id', 5), ('price', 25)})}
+2025-04-08 09:46:23 - 4: ClassifyExpensive with binding {p -> frozenset({('id', 3), ('price', 45), ('name', 'Cheese')}), total -> 0}
+2025-04-08 09:46:23 - 5: ClassifyCheap with binding {p -> frozenset({('price', 10), ('name', 'Eggs'), ('id', 6)}), total -> 0}
