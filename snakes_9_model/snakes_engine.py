@@ -5,7 +5,7 @@ snakes.plugins.load('gv', 'snakes.nets', 'nets')  # Load the gv plugin
 from nets import PetriNet
 import re
 
-# Universal normalization function subtype_contents.
+# Функция нормализации subtype_contents:
 def normalize_subtype_contents(contents):
     if isinstance(contents, str):
         contents = contents.strip()
@@ -19,7 +19,7 @@ def normalize_subtype_contents(contents):
     else:
         return [contents]
 
-# Colset type-checking functions.
+# Вспомогательные функции для проверки типов colset:
 def check_record(token):
     return isinstance(token, frozenset)
 
@@ -56,7 +56,7 @@ def create_colset_functions(colsets):
     for colset in colsets:
         colset_name = colset["name"]
         colset_type = colset["subtype"]
-        subtype_contents = normalize_subtype_contents(colset.get("subtype_contents", ""))
+        subtype_contents = normalize_subtype_contents(colset["subtype_contents"])
         if colset_type == "unit":
             colset_functions[colset_name] = lambda x: x == "unit"
         elif colset_type == "bool":
@@ -94,7 +94,7 @@ def parse_initmark(initmark, values_dict=None):
         initmark = values_dict[initmark]
     flattened_tokens = []
     parts = initmark.split("++")
-    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1, “COL”) or 2`B
+    token_pattern = r"(\d+)`(.+)"
     for part in parts:
         match = re.match(token_pattern, part.strip())
         if match:
@@ -153,11 +153,6 @@ def create_variables(data):
     return variables
 
 def convert_condition(condition):
-    """
-    Converts ML conditions to Python.
-    Example:
-        [in1<>in2] -> in1 != in2
-    """
     if not condition:
         return None
     condition = condition.strip("[]").strip()
@@ -225,10 +220,7 @@ def parse_arc_expression(expression, arc_type):
         value = match.group(2).strip()
     else:
         value = expression
-    if '^' in value:
-        value = value.replace("^", "+")
-        return Expression(value)
-    # If the string starts with “(” and ends with “)”:
+    # Если выражение начинается и заканчивается с круглых скобок, обрабатываем как Tuple или Variable
     if value.startswith("(") and value.endswith(")"):
         inner = value[1:-1].strip()
         if "," in inner:
@@ -236,7 +228,9 @@ def parse_arc_expression(expression, arc_type):
             return Tuple([Variable(i) for i in items])
         else:
             return Variable(inner)
-    if re.search(r"[+*/-]", value):
+    # Если есть арифметические операторы или символ '^', преобразуем выражение
+    if re.search(r"[+*/^-]", value):
+        value = value.replace("^", "+")
         value = convert_expression(value)
         return Expression(value)
     return Variable(value)
@@ -246,7 +240,7 @@ def create_snakes_net(data, colset_functions, remove_names=False):
     places_info = []
     values_dict = {val["name"]: val["value"] for val in data.get("values", [])}
     variables = create_variables(data)
-    # Create places (if remove_names=True, the “Names” place is not added)
+    # Создаём места (при remove_names=True, место "Names" не добавляется)
     for place in data["places"]:
         if remove_names and str(place["text"]) == "Names":
             continue
@@ -265,7 +259,7 @@ def create_snakes_net(data, colset_functions, remove_names=False):
             tokens = MultiSet(new_tokens)
         net.add_place(Place(place_name, tokens=tokens, check=is_valid_func))
         places_info.append((place_name, tokens, place_type))
-    # Create transitions
+    # Создаём переходы
     for transition in data["transitions"]:
         transition_name = str(transition["text"])
         condition = convert_condition(transition["condition"])
@@ -273,17 +267,17 @@ def create_snakes_net(data, colset_functions, remove_names=False):
             net.add_transition(Transition(transition_name, guard=Expression(condition)))
         else:
             net.add_transition(Transition(transition_name))
-    # Create arcs (if remove_names=True, arcs related to “Names” are not added)
-    places_dict = {p["place_id"]: str(p["text"]) for p in data["places"] if not (remove_names and str(p["text"])=="Names")}
-    transitions_dict = {t["transition_id"]: str(t["text"]) for t in data["transitions"]}
+    # Создаём дуги, используя старый подход (через next)
     for arc in data["arcs"]:
         arc_type = arc["orientation"]
         place_id = arc["placeend"]
         transition_id = arc["transend"]
         expression = arc["expression"]
-        place_name = places_dict.get(place_id)
-        transition_name = transitions_dict.get(transition_id)
+        place_name = next((p["text"] for p in data["places"] if p["place_id"] == place_id), None)
+        transition_name = next((t["text"] for t in data["transitions"] if t["transition_id"] == transition_id), None)
         if not place_name or not transition_name:
+            continue
+        if remove_names and place_name == "Names":
             continue
         arc_label = parse_arc_expression(expression, arc_type)
         if arc_type == "PtoT":
