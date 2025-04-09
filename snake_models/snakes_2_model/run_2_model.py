@@ -5,7 +5,7 @@ import logging
 import shutil
 
 # Add the parent directory to the module search path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from main_code_function.functions_for_parsing import collect_all_data, load_cpn_file, get_page_block, get_globbox_block
 from main_code_function.snakes_engine_main import create_snakes_net, create_colset_functions
@@ -16,7 +16,7 @@ logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 # Clearing the log file (mode 'w' automatically overwrites the file)
-file_handler = logging.FileHandler("snakes_2_model/simulation_log.txt", mode='w', encoding='utf-8')
+file_handler = logging.FileHandler("snake_models/snakes_2_model/simulation_log.txt", mode='w', encoding='utf-8')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -26,7 +26,7 @@ stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
 # --- Clearing the image folder ---
-img_folder = os.path.join("snakes_2_model", "img")
+img_folder = os.path.join("snake_models/snakes_2_model", "img")
 if os.path.exists(img_folder):
     # Delete the folder and re-create it (to make sure it's empty)
     shutil.rmtree(img_folder)
@@ -55,7 +55,7 @@ for var_name, var_type in variables.items():
     logger.info(f"Variable: {var_name}, Type: {var_type}")
 
 # Save the first drawing of the network
-net.draw("snakes_2_model/ex1.png", engine="dot")
+net.draw("snake_models/snakes_2_model/ex1.png", engine="dot")
 
 logger.info("\n=== Full Petri Net Description ===")
 logger.info("\nPlaces:")
@@ -161,7 +161,7 @@ while step < max_steps:
     if should_fire_special_case(transition.name, binding):
         logger.info(f"Firing '{transition.name}' with binding: {binding}")
         transition.fire(binding)
-        output_path = f"snakes_2_model/img/step_{step + 1}_{transition.name}.png"
+        output_path = f"snake_models/snakes_2_model/img/step_{step + 1}_{transition.name}.png"
         logger.info(f"Saving snapshot to {output_path}")
         net.draw(output_path, engine="dot")
     else:
@@ -174,4 +174,4 @@ logger.info("\nFinal state of places:")
 for place in net.place():
     logger.info(f"Place: {place.name}, Tokens: {list(place.tokens)}")
 
-net.draw("snakes_2_model/ex2.png", engine="dot")
+net.draw("snake_models/snakes_2_model/ex2.png", engine="dot")

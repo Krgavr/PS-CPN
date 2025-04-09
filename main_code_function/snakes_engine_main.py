@@ -170,7 +170,7 @@ def convert_condition(condition):
             return f"dict({var})['{field}'] {rest}"
     condition = condition.replace("<>", "!=")
     condition = condition.replace("!==", "!=")
-    condition = condition.replace("=", "==")
+    condition = re.sub(r'(?<![!<>=])=(?![=])', "==", condition)
     return condition
 
 def convert_ml_if_expression(expr):
