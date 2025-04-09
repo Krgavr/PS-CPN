@@ -1,12 +1,12 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from main_code_function.functions_for_parsing import *
 
 
 if __name__ == "__main__":
     
-    file_path = 'parsing_AB_model/model_AB.cpn'
+    file_path = 'parsing_models/parsing_AB_model/model_AB.cpn'
 
     # Loading file
     root = load_cpn_file(file_path)

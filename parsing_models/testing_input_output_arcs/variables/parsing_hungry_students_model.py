@@ -1,11 +1,11 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from main_code_function.functions_for_parsing import *
 
 if __name__ == "__main__":
     
-    file_path = 'testing_input_output_arcs/variables/model_hungry_students.cpn'
+    file_path = 'parsing_models/testing_input_output_arcs/variables/model_hungry_students.cpn'
 
     # Loading file
     root = load_cpn_file(file_path)
