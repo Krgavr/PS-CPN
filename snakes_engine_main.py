@@ -94,7 +94,7 @@ def parse_initmark(initmark, values_dict=None):
         initmark = values_dict[initmark]
     flattened_tokens = []
     parts = initmark.split("++")
-    token_pattern = r"(\d+)`(.+)"
+    token_pattern = r"(\d+)`(.+)"  # For example: 1`(1, “COL”) or 2`B
     for part in parts:
         match = re.match(token_pattern, part.strip())
         if match:
@@ -153,6 +153,11 @@ def create_variables(data):
     return variables
 
 def convert_condition(condition):
+    """
+    Converts ML conditions to Python.
+    Example:
+        [in1<>in2] -> in1 != in2
+    """
     if not condition:
         return None
     condition = condition.strip("[]").strip()
