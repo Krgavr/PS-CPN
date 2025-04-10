@@ -1,7 +1,7 @@
 from snakes.nets import Place, MultiSet, Transition, Expression, Variable, Tuple
 from snakes.plugins import *
 import snakes.plugins
-snakes.plugins.load('gv', 'snakes.nets', 'nets')  # Load the gv plugin
+snakes.plugins.load('gv', 'snakes.nets', 'nets')
 from nets import PetriNet
 import re
 

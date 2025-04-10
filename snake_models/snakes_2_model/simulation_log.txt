@@ -1,88 +1,104 @@
-2025-04-09 10:58:18 - Declarations and data successfully loaded.
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:27 - Declarations and data successfully loaded.
+2025-04-10 12:06:27 - 
 Petri Net Description:
-2025-04-09 10:58:18 - CPN_Model
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:27 - CPN_Model
+2025-04-10 12:06:27 - 
 Places and their tokens:
-2025-04-09 10:58:18 - Place: Packets To Send, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], CheckType: NOxDATA
-2025-04-09 10:58:18 - Place: B, Tokens: [], CheckType: NOxDATA
-2025-04-09 10:58:18 - Place: Data Received, Tokens: [''], CheckType: DATA
-2025-04-09 10:58:18 - Place: NextSend, Tokens: [1], CheckType: NO
-2025-04-09 10:58:18 - Place: A, Tokens: [], CheckType: NOxDATA
-2025-04-09 10:58:18 - Place: D, Tokens: [], CheckType: NO
-2025-04-09 10:58:18 - Place: C, Tokens: [], CheckType: NO
-2025-04-09 10:58:18 - Place: NextRec, Tokens: [1], CheckType: NO
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:27 - Place: Packets To Send, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], CheckType: NOxDATA
+2025-04-10 12:06:27 - Place: B, Tokens: [], CheckType: NOxDATA
+2025-04-10 12:06:27 - Place: Data Received, Tokens: [''], CheckType: DATA
+2025-04-10 12:06:27 - Place: NextSend, Tokens: [1], CheckType: NO
+2025-04-10 12:06:27 - Place: A, Tokens: [], CheckType: NOxDATA
+2025-04-10 12:06:27 - Place: D, Tokens: [], CheckType: NO
+2025-04-10 12:06:27 - Place: C, Tokens: [], CheckType: NO
+2025-04-10 12:06:27 - Place: NextRec, Tokens: [1], CheckType: NO
+2025-04-10 12:06:27 - 
 Variables:
-2025-04-09 10:58:18 - Variable: n, Type: NO
-2025-04-09 10:58:18 - Variable: k, Type: NO
-2025-04-09 10:58:18 - Variable: d, Type: DATA
-2025-04-09 10:58:18 - Variable: data, Type: DATA
-2025-04-09 10:58:18 - Variable: success, Type: BOOL
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:27 - Variable: n, Type: NO
+2025-04-10 12:06:27 - Variable: k, Type: NO
+2025-04-10 12:06:27 - Variable: d, Type: DATA
+2025-04-10 12:06:27 - Variable: data, Type: DATA
+2025-04-10 12:06:27 - Variable: success, Type: BOOL
+2025-04-10 12:06:28 - 
 === Full Petri Net Description ===
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:28 - 
 Places:
-2025-04-09 10:58:18 - Place: Packets To Send, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], Check: check
-2025-04-09 10:58:18 - Place: B, Tokens: [], Check: check
-2025-04-09 10:58:18 - Place: Data Received, Tokens: [''], Check: check
-2025-04-09 10:58:18 - Place: NextSend, Tokens: [1], Check: check
-2025-04-09 10:58:18 - Place: A, Tokens: [], Check: check
-2025-04-09 10:58:18 - Place: D, Tokens: [], Check: check
-2025-04-09 10:58:18 - Place: C, Tokens: [], Check: check
-2025-04-09 10:58:18 - Place: NextRec, Tokens: [1], Check: check
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:28 - Place: Packets To Send, Tokens: [(1, 'COL'), (2, 'OUR'), (3, 'ED '), (4, 'PET'), (5, 'RI '), (6, 'NET')], Check: check
+2025-04-10 12:06:28 - Place: B, Tokens: [], Check: check
+2025-04-10 12:06:28 - Place: Data Received, Tokens: [''], Check: check
+2025-04-10 12:06:28 - Place: NextSend, Tokens: [1], Check: check
+2025-04-10 12:06:28 - Place: A, Tokens: [], Check: check
+2025-04-10 12:06:28 - Place: D, Tokens: [], Check: check
+2025-04-10 12:06:28 - Place: C, Tokens: [], Check: check
+2025-04-10 12:06:28 - Place: NextRec, Tokens: [1], Check: check
+2025-04-10 12:06:28 - 
 Transitions:
-2025-04-09 10:58:18 - Transition: Send Packet, Guard: True
-2025-04-09 10:58:18 - Transition: Transmit Packet, Guard: True
-2025-04-09 10:58:18 - Transition: Receive Packet, Guard: True
-2025-04-09 10:58:18 - Transition: Transmit Ack, Guard: True
-2025-04-09 10:58:18 - Transition: Receive Ack, Guard: True
-2025-04-09 10:58:18 - 
+2025-04-10 12:06:28 - Transition: Send Packet, Guard: True
+2025-04-10 12:06:28 - Transition: Transmit Packet, Guard: True
+2025-04-10 12:06:28 - Transition: Receive Packet, Guard: True
+2025-04-10 12:06:28 - Transition: Transmit Ack, Guard: True
+2025-04-10 12:06:28 - Transition: Receive Ack, Guard: True
+2025-04-10 12:06:28 - 
 Arcs:
-2025-04-09 10:58:18 - Input Arc: Packets To Send -> Send Packet, Label: (n, d)
-2025-04-09 10:58:18 - Input Arc: NextSend -> Send Packet, Label: n
-2025-04-09 10:58:18 - Output Arc: Send Packet -> Packets To Send, Label: (n, d)
-2025-04-09 10:58:18 - Output Arc: Send Packet -> NextSend, Label: n
-2025-04-09 10:58:18 - Output Arc: Send Packet -> A, Label: (n, d)
-2025-04-09 10:58:18 - Input Arc: A -> Transmit Packet, Label: (n, d)
-2025-04-09 10:58:18 - Output Arc: Transmit Packet -> B, Label: (n, d)
-2025-04-09 10:58:18 - Input Arc: B -> Receive Packet, Label: (n, d)
-2025-04-09 10:58:18 - Input Arc: Data Received -> Receive Packet, Label: data
-2025-04-09 10:58:18 - Input Arc: NextRec -> Receive Packet, Label: k
-2025-04-09 10:58:18 - Output Arc: Receive Packet -> Data Received, Label: data+d
-2025-04-09 10:58:18 - Output Arc: Receive Packet -> C, Label: k+1
-2025-04-09 10:58:18 - Output Arc: Receive Packet -> NextRec, Label: k+1
-2025-04-09 10:58:18 - Input Arc: C -> Transmit Ack, Label: n
-2025-04-09 10:58:18 - Output Arc: Transmit Ack -> D, Label: n
-2025-04-09 10:58:18 - Input Arc: D -> Receive Ack, Label: n
-2025-04-09 10:58:18 - Input Arc: NextSend -> Receive Ack, Label: k
-2025-04-09 10:58:18 - Output Arc: Receive Ack -> NextSend, Label: n
-2025-04-09 10:58:21 - Selected simulation mode: Automatic
-2025-04-09 10:58:21 - 
+2025-04-10 12:06:28 - Input Arc: Packets To Send -> Send Packet, Label: (n, d)
+2025-04-10 12:06:28 - Input Arc: NextSend -> Send Packet, Label: n
+2025-04-10 12:06:28 - Output Arc: Send Packet -> Packets To Send, Label: (n, d)
+2025-04-10 12:06:28 - Output Arc: Send Packet -> NextSend, Label: n
+2025-04-10 12:06:28 - Output Arc: Send Packet -> A, Label: (n, d)
+2025-04-10 12:06:28 - Input Arc: A -> Transmit Packet, Label: (n, d)
+2025-04-10 12:06:28 - Output Arc: Transmit Packet -> B, Label: (n, d)
+2025-04-10 12:06:28 - Input Arc: B -> Receive Packet, Label: (n, d)
+2025-04-10 12:06:28 - Input Arc: Data Received -> Receive Packet, Label: data
+2025-04-10 12:06:28 - Input Arc: NextRec -> Receive Packet, Label: k
+2025-04-10 12:06:28 - Output Arc: Receive Packet -> Data Received, Label: data+d
+2025-04-10 12:06:28 - Output Arc: Receive Packet -> C, Label: k+1
+2025-04-10 12:06:28 - Output Arc: Receive Packet -> NextRec, Label: k+1
+2025-04-10 12:06:28 - Input Arc: C -> Transmit Ack, Label: n
+2025-04-10 12:06:28 - Output Arc: Transmit Ack -> D, Label: n
+2025-04-10 12:06:28 - Input Arc: D -> Receive Ack, Label: n
+2025-04-10 12:06:28 - Input Arc: NextSend -> Receive Ack, Label: k
+2025-04-10 12:06:28 - Output Arc: Receive Ack -> NextSend, Label: n
+2025-04-10 12:06:34 - Selected simulation mode: Manual
+2025-04-10 12:06:34 - 
 Starting simulation loop...
-2025-04-09 10:58:21 - 
+2025-04-10 12:06:34 - 
 --- Step 1 ---
-2025-04-09 10:58:21 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
-2025-04-09 10:58:21 - Saving snapshot to snake_models/snakes_2_model/img/step_1_Send Packet.png
-2025-04-09 10:58:21 - 
+2025-04-10 12:06:34 - Available transitions:
+2025-04-10 12:06:34 - 0: Send Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:37 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
+2025-04-10 12:06:37 - Saving snapshot to snake_models/snakes_2_model/img/step_1_Send Packet.png
+2025-04-10 12:06:38 - 
 --- Step 2 ---
-2025-04-09 10:58:21 - Simulated random decision for 'Transmit Packet' → 1
-2025-04-09 10:58:21 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
-2025-04-09 10:58:21 - Saving snapshot to snake_models/snakes_2_model/img/step_2_Transmit Packet.png
-2025-04-09 10:58:22 - 
+2025-04-10 12:06:38 - Available transitions:
+2025-04-10 12:06:38 - 0: Send Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:38 - 1: Transmit Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:39 - Simulated random decision for 'Transmit Packet' → 1
+2025-04-10 12:06:39 - Firing 'Transmit Packet' with binding: {n -> 1, d -> 'COL'}
+2025-04-10 12:06:39 - Saving snapshot to snake_models/snakes_2_model/img/step_2_Transmit Packet.png
+2025-04-10 12:06:40 - 
 --- Step 3 ---
-2025-04-09 10:58:22 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
-2025-04-09 10:58:22 - Saving snapshot to snake_models/snakes_2_model/img/step_3_Send Packet.png
-2025-04-09 10:58:22 - 
+2025-04-10 12:06:40 - Available transitions:
+2025-04-10 12:06:40 - 0: Send Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:40 - 1: Receive Packet with binding {n -> 1, d -> 'COL', data -> '', k -> 1}
+2025-04-10 12:06:41 - Firing 'Receive Packet' with binding: {n -> 1, d -> 'COL', data -> '', k -> 1}
+2025-04-10 12:06:41 - Saving snapshot to snake_models/snakes_2_model/img/step_3_Receive Packet.png
+2025-04-10 12:06:42 - 
 --- Step 4 ---
-2025-04-09 10:58:22 - Firing 'Receive Packet' with binding: {n -> 1, d -> 'COL', data -> '', k -> 1}
-2025-04-09 10:58:22 - Saving snapshot to snake_models/snakes_2_model/img/step_4_Receive Packet.png
-2025-04-09 10:58:23 - 
+2025-04-10 12:06:42 - Available transitions:
+2025-04-10 12:06:42 - 0: Send Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:42 - 1: Transmit Ack with binding {n -> 2}
+2025-04-10 12:06:43 - Firing 'Transmit Ack' with binding: {n -> 2}
+2025-04-10 12:06:43 - Saving snapshot to snake_models/snakes_2_model/img/step_4_Transmit Ack.png
+2025-04-10 12:06:43 - 
 --- Step 5 ---
-2025-04-09 10:58:23 - Firing 'Send Packet' with binding: {n -> 1, d -> 'COL'}
-2025-04-09 10:58:23 - Saving snapshot to snake_models/snakes_2_model/img/step_5_Send Packet.png
-2025-04-09 10:58:23 - 
+2025-04-10 12:06:43 - Available transitions:
+2025-04-10 12:06:43 - 0: Send Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:43 - 1: Receive Ack with binding {n -> 2, k -> 1}
+2025-04-10 12:06:45 - Simulated random success for 'Receive Ack' → 0
+2025-04-10 12:06:45 - Condition not met for 'Receive Ack', executing alternative branch.
+2025-04-10 12:06:45 - Alternative action for 'Receive Ack': token returns to its original place (simulated).
+2025-04-10 12:06:45 - 
 --- Step 6 ---
-2025-04-09 10:58:23 - Firing 'Transmit Ack' with binding: {n -> 2}
-2025-04-09 10:58:23 - Saving snapshot to snake_models/snakes_2_model/img/step_6_Transmit Ack.png
+2025-04-10 12:06:45 - Available transitions:
+2025-04-10 12:06:45 - 0: Send Packet with binding {n -> 1, d -> 'COL'}
+2025-04-10 12:06:45 - 1: Receive Ack with binding {n -> 2, k -> 1}
